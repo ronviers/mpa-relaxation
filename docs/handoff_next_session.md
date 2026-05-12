@@ -47,9 +47,24 @@ Each driver profile declares `substrate_class_type`, `drive_mode`, `useful_work_
 
 ### Phase F: substrate menagerie expansion
 
+#### Phase F.1: LEDs (substrate-N, drive-axis) — scaffold landed 2026-05-12, data pending
+
+LED substrate scaffolding committed:
+
+- [reference-driver/led.md](../reference-driver/led.md) v0.1 — substrate-class declaration, mode-separation status (mode-separated electrical → optical), F-001 applicability (yes, via η_wpe), F-003 applicability (OPEN — drive-axis method research-pending)
+- [mpa_relaxation_packs/led.py](../mpa_relaxation_packs/led.py) — kernel skeleton with `regime_drive_axis(V, V_th, T)` classifier, `chit_max_predicted(η_wpe)`, `LED` dataclass
+
+Outside-research run issued 2026-05-12 with explicit regional/language casting (Cree, Lumileds, Osram, Nichia, Citizen, Honglitronic, Refond, Everlight, MLS, Sanan, Samsung, LG Innotek, Epistar; sources from CNKI, J-STAGE, KISS, 1688). When data lands:
+
+1. **Populate `data/leds.json`** with 15–20 LED candidates spanning chemistries and power classes
+2. **F-001-led test.** Compute chit_max bounds across the substrate-class. Predicted range: 0.10 (η_wpe 10%) to 0.69 (η_wpe 50%).
+3. **Drive-axis F-003 research.** With I-V curve data digitized across V_th for 3–5 canonical LEDs, look for a substrate-conditional signature analogous to RLC's algebraic-exponential factor at Q = 0.5. Candidate readings: exponential I-V curvature peak at V_th, carrier-lifetime relaxation behavior near threshold, small-signal admittance shape across threshold. This is **the framework-level open question** for drive-axis substrates.
+4. **F-003-cross-axis comparison.** Does the s-region smearing (kT/q ≈ 26 mV in LEDs) generalize to other drive-axis substrates? Lasers have *two* drive-axis transitions (diode threshold + lasing threshold). Plasma tubes have ionization threshold. Comparing the smearing widths across these would test the substrate-class fingerprint.
+
+#### Phase F.2: secondary substrate menagerie
+
 Substrate backlog entries in [SOURCES.md §7](../data/sources/SOURCES.md), ranked by activation criteria:
 
-- **§7.5 LEDs (drive-axis substrate).** First drive-axis substrate in the menagerie (vs damping-axis: actuators, RLC, materials). Tests cdv1 universality across axis types. cdv1's c→s→r might mean different things on the drive-axis vs damping-axis — the LED test reveals whether the framework is universal or axis-specific.
 - **§7.1 Stepper motors.** Multi-stable actuator configuration; inter-step ringing as F-003 read.
 - **§7.2 Mechanical switches / debounce.** Universal microelectronics-scale tuning problem.
 - **§7.3 RC circuits.** First-order endpoint of substrate-two; useful as r-regime limit reading.

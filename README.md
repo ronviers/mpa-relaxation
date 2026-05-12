@@ -54,6 +54,7 @@ See [CLAUDE.md](CLAUDE.md) for the finding-centric carve-out (deviation from sib
 | Voice coil actuator driver profile (mode-separated) | [reference-driver/voice-coil-actuator.md](reference-driver/voice-coil-actuator.md) |
 | RLC circuit driver profile (use-case dependent) | [reference-driver/rlc-circuit.md](reference-driver/rlc-circuit.md) |
 | Viscoelastic damping material driver profile (pure-dissipative) | [reference-driver/viscoelastic-damping-material.md](reference-driver/viscoelastic-damping-material.md) |
+| LED driver profile (drive-axis substrate, data pending) | [reference-driver/led.md](reference-driver/led.md) |
 | Engine instance (cited, frozen) | [github.com/ronviers/mpa-engine](https://github.com/ronviers/mpa-engine) |
 | cdv1 (framework being instanced) | [mpa-atlas/framework/cdv1_compressed.md](https://github.com/ronviers/mpa-atlas/blob/main/framework/cdv1_compressed.md) |
 | RFC-S (driver profile shape) | [mpa-atlas/rfcs/MPA-RFC-S_Scale-Management.md](https://github.com/ronviers/mpa-atlas/blob/main/rfcs/MPA-RFC-S_Scale-Management.md) |

@@ -51,6 +51,26 @@ Together: ~26 (Q, ω) data points spanning r-regime and c-regime in the voice-co
 - Standard second-order linear system: ẍ + 2γẋ + ω₀²x = (BL/M)·i. Q = ω₀/(2γ). Settling time and damping in any control engineering text.
 - Klippel large-signal extensions (also used in actuator characterization, not just speakers): [klippel.de/know-how/literature/application-notes.html](https://www.klippel.de/know-how/literature/application-notes.html).
 
+## §1.5 Light-emitting diodes (substrate-N, drive-axis, data pending)
+
+LEDs are the first **drive-axis substrate** in the menagerie. Regime classification by drive level (V vs V_th), not by Q. Substrate scaffolding landed 2026-05-12 (driver profile [reference-driver/led.md](../../reference-driver/led.md); kernel [mpa_relaxation_packs/led.py](../../mpa_relaxation_packs/led.py)). Substrate data **pending external-model research run 2026-05-12** — prompt explicitly cast wide across regions (Western, Japanese, Chinese, Korean, Indian, Taiwan) and languages (CNKI, J-STAGE, KISS, 1688 supplier portals).
+
+Once data lands:
+
+- Cross-vendor I-V curve diversity across LED chemistries (red, green, blue, white, IR, UV)
+- Power-class diversity (indicator <100 mW through industrial >20 W)
+- Wall-plug efficiency across the substrate-class for F-001-led bound testing
+- Open research question: drive-axis F-003 method (the s-region is smeared by thermal noise kT/q ≈ 26 mV; what's the substrate-conditional signature analogous to RLC's algebraic-exponential factor at Q = 0.5?)
+
+Target vendors for prompt (in regional order):
+
+- **Western:** Cree, Lumileds, Osram, Toshiba
+- **Japanese:** Nichia, Citizen, Stanley, Toyoda Gosei
+- **Chinese:** Honglitronic, Refond, Everlight, MLS, Sanan, Linkup, Wo Hong Lighting
+- **Korean:** Samsung, LG Innotek, Seoul Semiconductor
+- **Indian:** Surya, Halonix
+- **Taiwan:** Epistar
+
 ## §2 Engines (substrate one, cited)
 
 See [mpa-engine/data/sources/SOURCES.md](https://github.com/ronviers/mpa-engine/blob/main/data/sources/SOURCES.md). F-001 confirmed at chit_max ≈ 0.41 on the Camry 2.4L 2AZ-FE. Cross-substrate use here is read-only from that record; no new engine data lands in this repo.
