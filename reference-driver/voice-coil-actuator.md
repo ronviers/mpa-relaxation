@@ -1,7 +1,9 @@
 # Reference driver — voice coil linear actuator
 
 **Substrate-class:** `voice-coil-linear-actuator`
-**Status:** v0.1 — substrate-zero of mpa-relaxation. First calibration record pending external research output.
+**Substrate-class type:** `mode-separated` (drive electrical, useful-work mechanical)
+**F-001 applicability:** YES — η_em = (BL)² / (c·R + (BL)²) at mechanical resonance; chit_max ≤ -ln(1 - η_em)
+**Status:** v0.2 — substrate-zero of mpa-relaxation. Mode-separation declaration added 2026-05-12 per FOOTING F-001-scope-limit.
 **Targets:** [cdv1 (compressed)](https://github.com/ronviers/mpa-atlas/blob/main/framework/cdv1_compressed.md).
 **Shape:** [RFC-S §4 driver profile](https://github.com/ronviers/mpa-atlas/blob/main/rfcs/MPA-RFC-S_Scale-Management.md#4-driver-profile).
 
@@ -11,18 +13,25 @@
 
 A linear voice coil actuator: a coil constrained to translate within a permanent magnet's gap, generating Lorentz force F = BL·i under electrical drive against a mechanical suspension and (configurable) external load. The substrate-class spans hard disk drive head positioners, camera optical image stabilizers, semiconductor lithography stages, haptic linear resonant actuators, inertial vibration actuators, MRI gradient coils, and laboratory shakers. All read through the same cdv1 primitives; per-instance amplitudes declared in per-actuator calibration records.
 
+**Mode-separation status: mode-separated.** Drive mode: electrical (voltage × current at the coil terminals). Useful-work mode: mechanical (force × velocity through the BL coupling). The two modes share no overlap by substrate construction — electrical energy flows in one direction through the BL coupling and emerges as mechanical work (plus mechanical-dissipation in suspension). This satisfies F-001's mode-separation precondition; chit_max ≤ -ln(1 - η_em) applies.
+
 Substrate excludes: rotating motors (DC, BLDC, stepper) — those are a different substrate-class with different chit structure. Loudspeaker drivers are a configured instance of this substrate (cone + cavity load), characterized separately in Phase E.
 
 ## 2. Header
 
 | Field | Value |
 |---|---|
-| `profile_version` | 0.1 |
+| `profile_version` | 0.2 |
 | `target_rfc_versions` | RFC-S v0.2, RFC-C v0.2, cdv1 (compressed) |
 | `substrate_class` | `voice-coil-linear-actuator` |
+| `substrate_class_type` | `mode-separated` |
+| `drive_mode` | electrical (V·I at coil terminals) |
+| `useful_work_mode` | mechanical (force × velocity through BL coupling) |
+| `f_001_applicability` | yes (η_em = (BL)²/(c·R+(BL)²); chit_max ≤ -ln(1-η_em)) |
+| `f_003_applicability` | yes (Q = ω₀/(2γ); regime c at Q>0.5, s at Q=0.5, r at Q<0.5) |
 | `characterization_date` | 2026-05-12 |
 | `authority` | mpa-relaxation v0 scaffold |
-| `validation_history` | none yet (first calibration record pending external research) |
+| `validation_history` | F-001-actuator-mdpi bound computed 2026-05-12 (Al bobbin Q=0.033, chit_max bound 0.089; plastic bobbin Q=0.394, chit_max bound 0.752). F-002-restoration partial via PyHDDBenchmark closed-loop (Q_cl ≈ 1.4, 8-54× reduction from open-loop). |
 
 ## 3. Operating envelope
 
