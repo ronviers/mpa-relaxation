@@ -28,3 +28,6 @@ desktop.ini
 .idea/
 *.swp
 *~
+
+# Cloned external repos for substrate analysis (re-clone per data/sources/SOURCES.md)
+data/external/

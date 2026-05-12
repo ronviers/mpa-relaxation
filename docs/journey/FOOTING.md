@@ -107,3 +107,37 @@ F-001 itself — the universal form chit_max ≈ -ln(1 - η) — passes cleanly.
 **Framework implication.** Real-substrate F-003 measurements must achieve at least 30 dB SNR (preferably 40+ dB) for the algebraic signature to be detectable. Modern lab oscilloscopes (60–80 dB), professional ADCs (80–100 dB), and even consumer-grade DAQs (30–50 dB) all clear the floor comfortably. The noise robustness is not a practical barrier; this finding rules out one failure mode for upcoming real-substrate replications (noisy data masking a present signature → false negative).
 
 **When to cite this.** Any F-003 test against real-substrate data must report measurement SNR. If reported SNR is below 30 dB and the F-003 signature is not detected, the result is methodologically inconclusive — the framework's prediction may still hold, the test just can't see it. Future-Claude: include SNR estimation as a standard step in F-003-on-real-data experiments.
+
+## F-002-restoration · partial: controller pulls plant 1–2 decades toward s-boundary but stops short · 2026-05-12
+
+**Claim under test.** F-002-contrast (entry above) proposed a falsifier: if HDD-style external controllers *natively hunt for Q_cl ≈ 0.5*, the universal SOC-attractor reading of F-002 is restored at the plant+controller level. The PyHDDBenchmark closed-loop is the natural test case — real industrial HDD controller, real plant, published frequency-response data.
+
+**Evidence.** [experiments/f002_restoration_pyhddbenchmark.py](../../experiments/f002_restoration_pyhddbenchmark.py), [docs/results/f002_restoration_pyhddbenchmark.json](../results/f002_restoration_pyhddbenchmark.json). Loaded `Fre_Resp.json` from the cloned PyHDDBenchmark repo (instructions in [SOURCES.md §1.0](../../data/sources/SOURCES.md)). Computed L = P·C·F, T = L/(1+L), S = 1/(1+L) for 9 plant manufacturing variations. Extracted Q_cl from peak sensitivity M_s using the second-order approximation M_s = 1/(2ζ√(1-ζ²)).
+
+| Metric | Open-loop plant (substrate-zero) | Closed-loop (plant + controller) |
+|---|---|---|
+| Q range | [12.5, 71.4] | [1.33, 1.56] |
+| Regime | c (deep) | c (moderate) |
+| Reduction factor (Q_open / Q_cl) | — | 8× to 54× |
+| Closed-loop bandwidth | n/a | ~5.3 kHz across all 9 realizations |
+
+**Verdict: PARTIAL RESTORATION.** The controller drops the substrate's effective Q by 1–2 decades — substantial pull toward the s-boundary — but lands at Q_cl ≈ 1.4, not Q_cl = 0.5. The closed-loop is *much closer* to chit ≈ 0 than the open-loop plant, but not at it. F-002's universal SOC-attractor reading is not fully restored by adding a controller; instead, *each substrate-class declares how aggressively its design pressure pushes toward Q ≈ 0.5*.
+
+**Refined framework reading.** Substrate-class fingerprints differ in *what pushes them toward or away from the s-boundary*:
+
+| Substrate-class | Design pressure | Operating Q |
+|---|---|---|
+| IC engine at idle | Must be stable at low fuel; ECU drives the lowest stable RPM | chit ≈ 0 exactly (Q ≈ 0.5 by force) |
+| Loudspeaker driver | Physics caps acoustic efficiency at 1–3% | chit ≈ 0.003–0.014 (≈ Q ≈ 0.5 by physics) |
+| HDD VCM + controller | Bandwidth-pressure pushes Q_cl up (fast response); settling-pressure pushes Q_cl down (no ringing). Tradeoff lands at Q_cl ≈ 1.4 | c-regime, but 1–2 decades below open-loop plant |
+| HDD VCM open-loop | None — plant is engineered for sharp resonance peaks, externally damped | Q ∈ [12.5, 71], deep c-regime |
+
+The cdv1 §Active modulation decomposition (plant + controller) lands here cleanly: the *controller* carries the SOC-pulling work, but the *controller's design objective* isn't necessarily chit ≈ 0 — it's a substrate-conditional tradeoff between competing performance goals.
+
+**Framework implication.** F-002 is not universal as written. The substrate-conditional refinement: every driven-dissipative NESS has *some* design pressure toward chit ≈ 0 (otherwise the system wouldn't be a sustained NESS at all), but the *amplitude* of that pressure varies by substrate. Engines and loudspeakers land at chit ≈ 0 because the physics or the dominant design constraint forces it. HDDs land at chit > 0 because the bandwidth-vs-damping tradeoff is two-sided.
+
+**Sub-result worth noting.** The 8–54× Q reduction is *itself* an interesting universality candidate. If many substrate+controller pairs show O(10) Q reduction (regardless of where the final Q_cl lands), that's a substrate-neutral statement about controller efficacy. Worth surfacing as a candidate finding for the framework: "external controllers reduce substrate Q by roughly one decade, regardless of substrate-class."
+
+**Status.** F-002-restoration: partial yes (substantial pull, not full landing at s-boundary). F-002 retracted as universal; refined to substrate-conditional with explicit design-pressure declaration in each substrate's calibration record. F-002-contrast (FOOTING 2026-05-12) and F-002-restoration (this entry) together replace the original F-002 universal reading.
+
+**Pending closure.** The Q_cl extraction here uses a second-order approximation (Q from M_s peak). The actual closed-loop is high-order (9-state controller + 16-mode plant + multi-rate filter). A tighter Q_cl might come from time-domain step-response analysis (overshoot directly tells damping ratio of the dominant pole pair). Future Phase C work could run the full PyHDDBenchmark simulation and measure overshoot in the position trajectory, refining the Q_cl ≈ 1.4 estimate. For now, the 1-2 decade Q-reduction finding is solid regardless of the exact endpoint.

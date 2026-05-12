@@ -17,6 +17,14 @@ Three outside-model research runs against the actuator-targeted prompt landed 20
 1. **[MDPI Actuators 2020, 9(1):8](https://www.mdpi.com/2076-0825/9/1/8)** — *Effect of Electromagnetic Damping on System Performance of Voice-Coil Actuator Applied to Balancing-Type Scale*. Bare cantilever + bobbin + magnet VCA. Full EM/mechanical parameters in Table 2. Step responses in Figures 12–13. Two configured instances (Al / plastic bobbin) — **Q ≈ 0.033 and 0.39, both r-regime**.
 2. **[PyHDDBenchmark](https://github.com/macs-lab/PyHDDBenchmark)** (open-source Python port of IEEJ HDD positioning benchmark by Atsumi & Yabui 2020). Real HDD plant measurement data: **16 VCM modes** with **Q ∈ [12.5, 71], all c-regime**, plus 8 PZT modes. `plant.py` has modal parameters; `Fre_Resp.json` is the frequency-response data; `Data_RRO.txt` is time-domain RRO (Repeatable Run-Out) disturbance.
 
+**PyHDDBenchmark local clone instructions** (used by F-002-restoration experiment; not committed to this repo per `.gitignore`):
+
+```
+git clone https://github.com/macs-lab/PyHDDBenchmark.git data/external/PyHDDBenchmark
+```
+
+Phase data in `Fre_Resp.json` is in **radians**, not degrees. (First-pass ingest applied an erroneous deg→rad conversion; corrected 2026-05-12. Future ingests of similar FRF datasets: check phase units before computing complex transfer functions.)
+
 Together: ~26 (Q, ω) data points spanning r-regime and c-regime in the voice-coil-actuator substrate-class. F-002 contrast finding: HDD VCMs are deliberately engineered for c-regime (sharp resonances + external controller), NOT chit ≈ 0 — substrate-class fingerprint divergence vs engines/loudspeakers.
 
 **Empirical update to §1.1 below:** systematic open-data scan returned essentially null for bare-VCA step-response time-series. The archives listed below remain authoritative entry points, but the *expected* presence of machine-readable datasets was optimistic. Bias toward paper PDFs with embedded figures rather than supplementary `.csv` / `.mat` files.
