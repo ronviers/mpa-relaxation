@@ -43,6 +43,21 @@ Six substrate-classes characterized end-to-end. cdv1's substrate-conditional/sub
 
 ## What's queued
 
+### Phase G — RFC-C calibration records for canonical instances (protocol gap closure)
+
+**Honest gap.** mpa-relaxation has produced 5 driver profiles (characterization artifacts per RFC-S §4) and **zero calibration records** (per-experiment artifacts per RFC-C §2). Per RFC-S §4.93: "A characterized-but-uncalibrated substrate has a profile that cannot be trusted on the current measurement." The F-/M-/PR-series findings are valid at the framework level (cross-substrate comparison at canonical-representation level), but they haven't been certified through mpa-bridge round-trip validation per RFC-S §5.
+
+**Six calibration records would close the protocol gap** for the substantive findings recorded this session. Mirror mpa-engine's [camry-2.4l-2az-fe-calibration.json](https://github.com/ronviers/engine/blob/main/reference-driver/camry-2.4l-2az-fe-calibration.json) shape (RFC-C §2). Each pins `tau_obs_canonical` within its substrate's declared $\Pi(S)$ range:
+
+1. `reference-driver/mdpi-2020-al-bobbin-calibration.json` (F-001-actuator-mdpi, r-regime instance)
+2. `reference-driver/mdpi-2020-plastic-bobbin-calibration.json` (F-001-actuator-mdpi)
+3. `reference-driver/pyhddbenchmark-vcm-ensemble-calibration.json` (F-002-restoration)
+4. `reference-driver/rlc-q-0.5-calibration.json` (F-003-rlc null check)
+5. `reference-driver/pu45a-high-damping-calibration.json` (F-003-viscoelastic s-boundary instance)
+6. `reference-driver/samsung-lm301b-calibration.json` (F-001-led canonical white; also satisfies PR-001 substrate-conditional-parameter calibration requirement)
+
+τ_obs windows across substrate-classes span ~9 orders of magnitude (ns LED carriers to minutes viscoelastic thermal). Cross-substrate comparison is at canonical-representation level (RFC-S §1: canonical representation IS τ_obs-relative), which is substrate-neutral. Each substrate reads at its own τ_obs; comparison is at the chit / regime / ratio_minimum level. The τ_obs windows are NOT in the same place but it doesn't matter for the F-series findings.
+
 ### Phase F.1 step 3 — drive-axis F-003 test (PR-001 protocol)
 
 **Prerequisites done:** substrate-conditional parameters (ideality factor n, thermal coefficient dV_th/dT_j, thermal time constant τ_th) populated for all 13 LEDs in [data/leds.json](../data/leds.json). Substrate-class predicted s-window width range: 41.4–77.6 mV at 300 K (typical InGaN/AlGaInP cluster 41–52 mV; Toyoda UV outlier at 77.6 mV with n=3.0).
