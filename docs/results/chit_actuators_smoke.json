@@ -1,0 +1,397 @@
+{
+  "experiment": "chit_actuators_smoke",
+  "run_at": "2026-05-12T12:14:10.265755+00:00",
+  "phase_a_step": 6,
+  "substrate_zero_stack": [
+    {
+      "source_file": "mdpi-2020-cantilever-vca.json",
+      "substrate_id": "8",
+      "variant": "bare cantilever beam + bobbin + permanent magnet, no cone/cavity",
+      "citation": "Sutton, J.; Tseng, T.-L.B. Effect of Electromagnetic Damping on System Performance of Voice-Coil Actuator Applied to Balancing-Type Scale. Actuators 2020, 9, 8.",
+      "summary": {
+        "total_modes": 2,
+        "regime_counts": {
+          "c": 0,
+          "s": 0,
+          "r": 2,
+          "rigid_body": 0
+        },
+        "Q_range": [
+          0.0328,
+          0.394
+        ],
+        "omega_range_radps": [
+          150.92,
+          150.92
+        ]
+      },
+      "modes": [
+        {
+          "index": 0,
+          "omega_radps": 150.92,
+          "zeta": 15.244,
+          "Q": 0.0328,
+          "regime": "r",
+          "gamma_decay_radps": 2300.6097560975604,
+          "omega_damped_radps": 0.0,
+          "notes": "Instance: aluminum_bobbin. Deeply overdamped. Eddy currents in the aluminum bobbin dominate dissipation. The two-real-exponentials regime (no oscillation). chit at steady state operation is well-defined but no resonance peak to read at."
+        },
+        {
+          "index": 1,
+          "omega_radps": 150.92,
+          "zeta": 1.27,
+          "Q": 0.394,
+          "regime": "r",
+          "gamma_decay_radps": 191.52284263959388,
+          "omega_damped_radps": 0.0,
+          "notes": "Instance: plastic_bobbin. Lightly overdamped, but still below Q = 0.5 (s-boundary). Approaching critical damping but does not reach it. Step response is two-real-exponentials, slower-decaying mode dominates."
+        }
+      ]
+    },
+    {
+      "source_file": "pyhddbenchmark-vcm.json",
+      "substrate_id": "https://github.com/macs-lab/PyHDDBenchmark",
+      "variant": "HDD magnetic head positioning voice coil motor, multimodal flexure structure",
+      "citation": "IEEJ Investigating R&D Committee on Precision Servo Technology, Atsumi & Yabui 2020 IEEE TIE 67(11):9184",
+      "summary": {
+        "total_modes": 16,
+        "regime_counts": {
+          "c": 15,
+          "s": 0,
+          "r": 0,
+          "rigid_body": 1
+        },
+        "Q_range": [
+          12.5,
+          71.429
+        ],
+        "omega_range_radps": [
+          33301.0,
+          281486.8
+        ]
+      },
+      "modes": [
+        {
+          "index": 0,
+          "omega_radps": 0.0,
+          "zeta": 0.0,
+          "Q": null,
+          "regime": "rigid_body",
+          "kappa_residue": 1.0,
+          "notes": "Rigid-body mode. No resonance."
+        },
+        {
+          "index": 1,
+          "omega_radps": 33301.0,
+          "zeta": 0.02,
+          "Q": 25.0,
+          "regime": "c",
+          "gamma_decay_radps": 666.02,
+          "omega_damped_radps": 33294.33913384676,
+          "kappa_residue": -1.0
+        },
+        {
+          "index": 2,
+          "omega_radps": 38327.7,
+          "zeta": 0.04,
+          "Q": 12.5,
+          "regime": "c",
+          "gamma_decay_radps": 1533.108,
+          "omega_damped_radps": 38297.02556531428,
+          "kappa_residue": 0.1
+        },
+        {
+          "index": 3,
+          "omega_radps": 40841.0,
+          "zeta": 0.02,
+          "Q": 25.0,
+          "regime": "c",
+          "gamma_decay_radps": 816.82,
+          "omega_damped_radps": 40832.830983016596,
+          "kappa_residue": -0.1
+        },
+        {
+          "index": 4,
+          "omega_radps": 50580.4,
+          "zeta": 0.01,
+          "Q": 50.0,
+          "regime": "c",
+          "gamma_decay_radps": 505.80400000000003,
+          "omega_damped_radps": 50577.87091677134,
+          "kappa_residue": 0.04
+        },
+        {
+          "index": 5,
+          "omega_radps": 60318.6,
+          "zeta": 0.03,
+          "Q": 16.667,
+          "regime": "c",
+          "gamma_decay_radps": 1809.5218095638086,
+          "omega_damped_radps": 60291.45160618305,
+          "kappa_residue": -0.7
+        },
+        {
+          "index": 6,
+          "omega_radps": 92991.1,
+          "zeta": 0.01,
+          "Q": 50.0,
+          "regime": "c",
+          "gamma_decay_radps": 929.9110000000001,
+          "omega_damped_radps": 92986.45032875532,
+          "kappa_residue": -0.2
+        },
+        {
+          "index": 7,
+          "omega_radps": 109330.6,
+          "zeta": 0.02,
+          "Q": 25.0,
+          "regime": "c",
+          "gamma_decay_radps": 2186.612,
+          "omega_damped_radps": 109308.73169295058,
+          "kappa_residue": -1.0
+        },
+        {
+          "index": 8,
+          "omega_radps": 131946.9,
+          "zeta": 0.02,
+          "Q": 25.0,
+          "regime": "c",
+          "gamma_decay_radps": 2638.938,
+          "omega_damped_radps": 131920.50798053408,
+          "kappa_residue": 3.0
+        },
+        {
+          "index": 9,
+          "omega_radps": 163362.8,
+          "zeta": 0.012,
+          "Q": 41.667,
+          "regime": "c",
+          "gamma_decay_radps": 1960.3379172966613,
+          "omega_damped_radps": 163351.03764313835,
+          "kappa_residue": -3.2
+        },
+        {
+          "index": 10,
+          "omega_radps": 167131.4,
+          "zeta": 0.007,
+          "Q": 71.429,
+          "regime": "c",
+          "gamma_decay_radps": 1169.9127805233168,
+          "omega_damped_radps": 167127.30527967584,
+          "kappa_residue": 2.1
+        },
+        {
+          "index": 11,
+          "omega_radps": 182212.4,
+          "zeta": 0.01,
+          "Q": 50.0,
+          "regime": "c",
+          "gamma_decay_radps": 1822.124,
+          "omega_damped_radps": 182203.2891522231,
+          "kappa_residue": -1.5
+        },
+        {
+          "index": 12,
+          "omega_radps": 202321.2,
+          "zeta": 0.03,
+          "Q": 16.667,
+          "regime": "c",
+          "gamma_decay_radps": 6069.514609707806,
+          "omega_damped_radps": 202230.13860906725,
+          "kappa_residue": 2.0
+        },
+        {
+          "index": 13,
+          "omega_radps": 240641.4,
+          "zeta": 0.01,
+          "Q": 50.0,
+          "regime": "c",
+          "gamma_decay_radps": 2406.4139999999998,
+          "omega_damped_radps": 240629.3676291832,
+          "kappa_residue": -0.2
+        },
+        {
+          "index": 14,
+          "omega_radps": 272058.8,
+          "zeta": 0.01,
+          "Q": 50.0,
+          "regime": "c",
+          "gamma_decay_radps": 2720.5879999999997,
+          "omega_damped_radps": 272045.1967199095,
+          "kappa_residue": 0.3
+        },
+        {
+          "index": 15,
+          "omega_radps": 281486.8,
+          "zeta": 0.01,
+          "Q": 50.0,
+          "regime": "c",
+          "gamma_decay_radps": 2814.868,
+          "omega_damped_radps": 281472.7253081239,
+          "kappa_residue": -0.5
+        }
+      ]
+    },
+    {
+      "source_file": "pyhddbenchmark-pzt.json",
+      "substrate_id": "https://github.com/macs-lab/PyHDDBenchmark",
+      "variant": "PZT secondary actuator in dual-stage HDD positioning system. Strictly piezoelectric, not voice-coil \u2014 same substrate-class via second-order mechanical oscillator structure but different drive mechanism.",
+      "citation": "IEEJ Investigating R&D Committee on Precision Servo Technology, Atsumi & Yabui 2020 IEEE TIE 67(11):9184",
+      "summary": {
+        "total_modes": 8,
+        "regime_counts": {
+          "c": 8,
+          "s": 0,
+          "r": 0,
+          "rigid_body": 0
+        },
+        "Q_range": [
+          1.667,
+          62.5
+        ],
+        "omega_range_radps": [
+          92991.1,
+          628318.5
+        ]
+      },
+      "modes": [
+        {
+          "index": 0,
+          "omega_radps": 92991.1,
+          "zeta": 0.025,
+          "Q": 20.0,
+          "regime": "c",
+          "gamma_decay_radps": 2324.7775,
+          "omega_damped_radps": 92962.03573924946,
+          "kappa_residue": -0.005
+        },
+        {
+          "index": 1,
+          "omega_radps": 135088.3,
+          "zeta": 0.03,
+          "Q": 16.667,
+          "regime": "c",
+          "gamma_decay_radps": 4052.5679486410263,
+          "omega_damped_radps": 135027.49901376254,
+          "kappa_residue": -0.01
+        },
+        {
+          "index": 2,
+          "omega_radps": 175929.2,
+          "zeta": 0.05,
+          "Q": 10.0,
+          "regime": "c",
+          "gamma_decay_radps": 8796.460000000001,
+          "omega_damped_radps": 175709.15088323774,
+          "kappa_residue": -0.1
+        },
+        {
+          "index": 3,
+          "omega_radps": 252584.1,
+          "zeta": 0.008,
+          "Q": 62.5,
+          "regime": "c",
+          "gamma_decay_radps": 2020.6728,
+          "omega_damped_radps": 252576.0171794728,
+          "kappa_residue": 0.8
+        },
+        {
+          "index": 4,
+          "omega_radps": 264209.2,
+          "zeta": 0.008,
+          "Q": 62.5,
+          "regime": "c",
+          "gamma_decay_radps": 2113.6736,
+          "omega_damped_radps": 264200.74517032056,
+          "kappa_residue": 0.3
+        },
+        {
+          "index": 5,
+          "omega_radps": 278972.4,
+          "zeta": 0.01,
+          "Q": 50.0,
+          "regime": "c",
+          "gamma_decay_radps": 2789.724,
+          "omega_damped_radps": 278958.45103126706,
+          "kappa_residue": -0.25
+        },
+        {
+          "index": 6,
+          "omega_radps": 292168.0,
+          "zeta": 0.02,
+          "Q": 25.0,
+          "regime": "c",
+          "gamma_decay_radps": 5843.36,
+          "omega_damped_radps": 292109.56055547105,
+          "kappa_residue": 0.3
+        },
+        {
+          "index": 7,
+          "omega_radps": 628318.5,
+          "zeta": 0.3,
+          "Q": 1.667,
+          "regime": "c",
+          "gamma_decay_radps": 188457.85842831433,
+          "omega_damped_radps": 599389.5002741235,
+          "kappa_residue": 10.0
+        }
+      ]
+    }
+  ],
+  "cross_substrate_envelope": {
+    "total_real_modes": 25,
+    "Q_min": 0.0328,
+    "Q_max": 71.429,
+    "regime_distribution": {
+      "c": 23,
+      "s": 0,
+      "r": 2
+    },
+    "Q_span_decades": "2177.7x",
+    "regime_coverage": "c-regime and r-regime represented; s-boundary (Q \u2248 0.5) unsampled in current stack"
+  },
+  "F-001_chit_max_prediction_sweep": {
+    "eta=0.02": {
+      "chit_max_bound": 0.020202707317519466,
+      "interpretation": "For a substrate-class instance with electromechanical efficiency 2%, F-001 predicts chit_max \u2264 0.0202."
+    },
+    "eta=0.05": {
+      "chit_max_bound": 0.05129329438755058,
+      "interpretation": "For a substrate-class instance with electromechanical efficiency 5%, F-001 predicts chit_max \u2264 0.0513."
+    },
+    "eta=0.1": {
+      "chit_max_bound": 0.10536051565782628,
+      "interpretation": "For a substrate-class instance with electromechanical efficiency 10%, F-001 predicts chit_max \u2264 0.1054."
+    },
+    "eta=0.2": {
+      "chit_max_bound": 0.2231435513142097,
+      "interpretation": "For a substrate-class instance with electromechanical efficiency 20%, F-001 predicts chit_max \u2264 0.2231."
+    },
+    "eta=0.3": {
+      "chit_max_bound": 0.35667494393873245,
+      "interpretation": "For a substrate-class instance with electromechanical efficiency 30%, F-001 predicts chit_max \u2264 0.3567."
+    },
+    "eta=0.5": {
+      "chit_max_bound": 0.6931471805599453,
+      "interpretation": "For a substrate-class instance with electromechanical efficiency 50%, F-001 predicts chit_max \u2264 0.6931."
+    },
+    "eta=0.8": {
+      "chit_max_bound": 1.6094379124341005,
+      "interpretation": "For a substrate-class instance with electromechanical efficiency 80%, F-001 predicts chit_max \u2264 1.6094."
+    }
+  },
+  "queued_for_phase_a_step_7": {
+    "F-001-actuator": {
+      "description": "chit_max bound across substrate-zero instances.",
+      "needs": "Electromechanical efficiency eta for each instance (MDPI 2020 Al/plastic, PyHDDBenchmark VCM, PyHDDBenchmark PZT). Compute eta = useful_mechanical_work / electrical_input at sustained operating point.",
+      "status": "pending eta extraction"
+    }
+  },
+  "queued_for_phase_a_step_8": {
+    "F-002-contrast": {
+      "description": "Record SOC-attractor reading as substrate-conditional, not universal.",
+      "claim": "HDD VCMs are deliberately engineered for c-regime; engines tune to chit\u22480 at idle by SOC self-tuning; loudspeakers sit at chit\u22480 by radiation efficiency cap. Three different substrates, three different positions on the chit axis by design.",
+      "status": "ready to land in docs/journey/FOOTING.md as F-002-contrast"
+    }
+  }
+}
