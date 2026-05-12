@@ -3,8 +3,10 @@
 **Substrate-class:** `light-emitting-diode`
 **Substrate-class type:** `mode-separated` + `drive-axis` (regime walks via drive level, not damping)
 **F-001 applicability:** YES — η_wpe = optical_power_out / electrical_power_in; chit_max ≤ -ln(1 - η_wpe)
-**F-003 applicability:** OPEN — the c→s→r structure on drive-axis substrates is research-pending. The s-region is *smeared* by thermal noise (width ~kT/q ≈ 26 mV at room temperature) rather than a sharp Q = 0.5 boundary.
-**Status:** v0.1 — substrate-N of mpa-relaxation. First drive-axis substrate in the repo. Substrate data pending external-model research (prompt issued 2026-05-12).
+**F-003 applicability:** PRE-REGISTERED (PR-001 in FOOTING) — protocol committed before test runs. The chit = 0 locus attaches to **L_opt (optical output)**, not I-V. Slow resource is **junction temperature T_j** (ms-to-s), not carrier dynamics (ns). Predicted s-window width: **n·kT/q** (≈ 30–60 mV at 300 K, where n is the ideality factor ∈ [1.2, 2.4]).
+**chit = 0 observable:** L_opt (radiated optical power). The I-V curve is monotone exponential with no sharp electrical knee; using I-V alone would rederive the Shockley equation. L_opt has a real regime transition: ≈ 0 below threshold (r-regime), scales with I above threshold (c-regime).
+**Slow resource for F-003:** junction temperature T_j. Self-heating feedback (more I → more T_j → V_th drops → more I) provides the ms-to-s timescale that makes drive-axis-with-thermal-smearing distinguishable from "diodes are exponential."
+**Status:** v0.2 — substrate-N of mpa-relaxation. Pre-registration filed 2026-05-12 in [FOOTING PR-001](../docs/journey/FOOTING.md). v0.1 to v0.2 changes: ideality factor n added as substrate-conditional parameter; junction temperature declared as slow resource; L_opt declared as chit = 0 attachment observable; predicted s-window width corrected from kT/q to nkT/q.
 **Targets:** [cdv1 (compressed)](https://github.com/ronviers/mpa-atlas/blob/main/framework/cdv1_compressed.md).
 **Shape:** [RFC-S §4 driver profile](https://github.com/ronviers/mpa-atlas/blob/main/rfcs/MPA-RFC-S_Scale-Management.md#4-driver-profile).
 
@@ -20,13 +22,17 @@ The substrate-class spans indicator LEDs (mW power range), smartphone-flash LEDs
 
 **Drive-axis substrate.** Unlike voice coil actuators, RLC circuits, and viscoelastic damping materials — where the c/s/r regime is determined by **Q (damping)** — LEDs determine regime by **drive level relative to threshold V_th**:
 
-| Regime | Drive condition | Substrate state |
+| Regime | Drive condition | Substrate state (observable on L_opt) |
 |---|---|---|
-| r-regime | V_drive < V_th − kT/q | Negligible current, no sustained emission. No NESS. |
-| s-region | V_drive ≈ V_th ± kT/q | Exponential I-V curvature peak; transition zone |
-| c-regime | V_drive > V_th + kT/q | Sustained current flow, sustained photon emission. NESS at chit ≈ 0 by power balance. |
+| r-regime | V_drive < V_th − n·kT/q | L_opt ≈ 0 (sub-threshold spontaneous emission only). No sustained NESS. |
+| s-region | V_drive ≈ V_th ± n·kT/q | L_opt transitions from ≈ 0 to scaling with I. Thermal-feedback-smeared. |
+| c-regime | V_drive > V_th + n·kT/q | L_opt scales with I. NESS at chit ≈ 0 by power balance. |
 
-**The s-region is smeared** by thermal noise. Width ~kT/q ≈ 26 mV at room temperature. This is a substrate-conditional refinement of cdv1's c/s/r: drive-axis substrates have a *transition region* rather than a *single critical point*. (Damping-axis substrates have a single Q = 0.5 by contrast.)
+**The s-region is smeared** with width **n·kT/q** where n is the ideality factor ∈ [1, 2] typical. At 300 K with n ∈ [1.2, 2.4]: width 30–60 mV. The kT/q-only framing in v0.1 was incomplete — n must be characterized per LED instance. The "chit-slope universality" dchit/dV = q/kT is exact only for n = 1; n > 1 widens the smearing.
+
+**The chit = 0 locus attaches to L_opt, not I-V.** Critical methodological point. The I-V curve is monotone exponential with no sharp electrical knee — there is no "regime transition" in I-V; using it would rederive the Shockley equation and add nothing. The L_opt curve has a real regime transition: ≈ 0 below threshold, scales with I above. The optical threshold is set by photon energy / charge, not by junction barrier; it differs from the electrical-current onset. **Pick L_opt upfront and stay on it** (PR-001).
+
+**Slow resource: junction temperature T_j.** Damping-axis substrates carry their slow resource intrinsically (the RLC mode IS the slow resource). LEDs at DC are nearly slow-resource-free; carrier dynamics are nanoseconds. The natural slow resource is T_j, which gives ms-to-s feedback: more I → more dissipated power → T_j rises → V_th drops (negative thermal coefficient) → more I. Without this thermal-feedback coupling in the test protocol, the s-window will look like a smooth I-V curve and we can't tell drive-axis smearing apart from "diodes are exponential."
 
 Substrate excludes: laser diodes (have a *second* threshold beyond the LED I-V threshold — the lasing threshold — at which coherent emission emerges; mathematically richer substrate-class with both drive-axis and damping-axis structure). Photodiodes (reverse-biased; different substrate-class). LED lighting systems with drivers and thermal management are *configured instances* of the LED substrate plus auxiliary substrates.
 
@@ -34,18 +40,23 @@ Substrate excludes: laser diodes (have a *second* threshold beyond the LED I-V t
 
 | Field | Value |
 |---|---|
-| `profile_version` | 0.1 |
+| `profile_version` | 0.2 |
 | `target_rfc_versions` | RFC-S v0.2, RFC-C v0.2, cdv1 (compressed) |
 | `substrate_class` | `light-emitting-diode` |
 | `substrate_class_type` | `mode-separated` + `drive-axis` |
 | `drive_mode` | electrical (V_forward × I_forward) |
-| `useful_work_mode` | optical (radiated photon power) |
+| `useful_work_mode` | optical (radiated photon power, L_opt) |
+| `chit_zero_attachment_observable` | L_opt (NOT I-V — I-V is monotone exponential with no regime transition) |
+| `slow_resource` | junction temperature T_j (ms-to-s thermal feedback) |
 | `f_001_applicability` | yes (η_wpe = optical_out / electrical_in; chit_max ≤ -ln(1 - η_wpe)) |
-| `f_003_applicability` | OPEN — drive-axis F-003 method research-pending; s-region smeared by thermal noise (width ~kT/q) |
+| `f_003_applicability` | PRE-REGISTERED (FOOTING PR-001) — protocol committed before run; predicted s-window width n·kT/q (30–60 mV at 300 K); predicted ratio_minimum_value > 0 (non-zero floor); falsifier: sharp zero at V = V_th |
 | `regime_classifier_axis` | drive-level (V vs V_th) — distinguished from damping-axis substrates that classify by Q |
-| `characterization_date` | 2026-05-12 |
-| `authority` | mpa-relaxation v0 scaffold (substrate data pending) |
-| `validation_history` | none yet — first calibration record pending external-model research run 2026-05-12 |
+| `substrate_conditional_parameter_n` | ideality factor n ∈ [1, 2]; must be measured per instance (semilog I-V fit) |
+| `substrate_conditional_parameter_thermal_coefficient` | dV_th/dT_j (mV/°C); vendor-published |
+| `substrate_conditional_parameter_thermal_time_constant` | τ_th (ms); thermal resistance × heat capacity |
+| `characterization_date` | 2026-05-12 (v0.2) |
+| `authority` | mpa-relaxation v0 scaffold; PR-001 pre-registration 2026-05-12 |
+| `validation_history` | F-001-led bound test 2026-05-12 (chit_max range 0.084 to 0.693 across 13 instances). F-003-led pending step-response data; PR-001 protocol committed in advance. |
 
 ## 3. Operating envelope
 
@@ -113,12 +124,22 @@ Methodology: vendor datasheets (Cree, Lumileds, Osram, Nichia, Citizen, Toshiba,
 
 **Versioning:** v0.1 is the substrate-class scaffold. v0.2 lands when the first calibration record (one canonical LED from each of: indicator, smartphone-flash, automotive, bulb, high-power-industrial) populates the gamut. v0.3 unfolds the η_wpe(I, T_j) surface for at least one canonical LED. v1.0 lands when drive-axis F-003 method is settled and tested against substrate data.
 
-## Open question: drive-axis F-003
+## Drive-axis F-003 protocol (PR-001 pre-registered, 2026-05-12)
 
-cdv1's c→s→r structure was confirmed in damping-axis substrates via the algebraic-exponential signature at Q = 0.5 (FOOTING F-003-rlc, 2026-05-12). For drive-axis substrates, the analogous test is unclear:
+cdv1's c→s→r structure was confirmed in damping-axis substrates via the algebraic-exponential signature at Q = 0.5 (FOOTING F-003-rlc, 2026-05-12). For drive-axis substrates, the protocol is now pre-registered in [FOOTING PR-001](../docs/journey/FOOTING.md). Summary:
 
-- Is it the exponential I-V curvature peak at V_th?
-- Is it the carrier-lifetime relaxation behavior near threshold?
-- Is it something about the small-signal admittance shape across threshold?
+**Observable.** L_opt step response (NOT I-V).
 
-Resolving this is the substrate-conditional research question for v0.2 of this driver profile. Most direct path: digitize I-V curves across V_th for 3–5 canonical LEDs (substrate data pending) and look for a signature that distinguishes the s-region from r and c, analogous to the algebraic-exp signature in RLC.
+**Drive variable.** Step V_drive through V_th. Plot ratio_minimum_value as function of (V_drive − V_th) / V_th.
+
+**Slow resource.** Junction temperature T_j (ms-to-s feedback loop). Without thermal coupling in the protocol, drive-axis-with-thermal-smearing is indistinguishable from "diodes are exponential."
+
+**Candidate envelopes.** "Pure thermal exp": L_opt(t) = L_steady · (1 − e^(−t/τ)). "Algebraic thermal": L_opt(t) = L_steady · (1 − (1 + t/τ)·e^(−t/τ)). Mirror F-003-rlc structure.
+
+**Predicted s-window width.** n·kT/q ≈ 30–60 mV at 300 K for n ∈ [1.2, 2.4].
+
+**Predicted ratio_minimum_value.** *Non-zero* minimum across the sweep, floor set by n·kT/q against substrate's natural drive scale. **Falsifier:** if ratio_minimum hits zero at V = V_th (sharp like RLC), drive-axis-with-thermal-smearing fails — cdv1 c→s→r doesn't extend cleanly to drive-axis substrates.
+
+**Pre-registered actions on outcome.** Three branches: PASS (width 30–60 mV, ratio > 0), PARTIAL (width outside [20, 100] mV, record actual slow-resource), FAIL (sharp zero — record as scope-limit on framework).
+
+**Substrate-conditional parameters needed before running test.** Ideality factor n per LED (from semilog I-V fit), thermal coefficient dV_th/dT_j (vendor-published), thermal time constant τ_th (R_th × C_th), L_opt absolute calibration. These must be in the LED calibration record before F-003-led can produce an interpretable result.

@@ -266,3 +266,76 @@ F-003 (regime structure from Q: c above Q = 0.5, s at Q = 0.5, r below) is the m
 **Test path (next turn).** [University of Bath ABC-recombination dataset](https://researchdata.bath.ac.uk) (Excel, multiple commercial InGaN LEDs, 0–500 mA L-I + I-V) is the most direct data source for hypothesis 2. [NBSDC China LED Optoelectronic Characteristics](https://www.nbsdc.cn) (4.42 MB downloadable) is the secondary candidate. If the droop-curvature signature lands cleanly at the η_wpe peak across multiple LEDs, the substrate-conditional drive-axis F-003 method is settled.
 
 **Predicted result.** Per cdv1 §Stability's reasoning that the s-region carries an algebraic factor (analogous to RLC's (1 + α·t)·e^(-α·t)), the drive-axis analogue is plausibly: at the η_wpe peak, η_wpe(I) has a polynomial-vs-exponential signature distinguishing it from off-peak operation. The B·n²/(A·n + B·n² + C·n³) function has well-known critical-curvature behavior at its maximum that may map onto cdv1's algebraic-factor prediction. Confirming this would extend cdv1's universality from damping-axis to drive-axis substrates.
+
+## PR-001 · Drive-axis F-003 protocol pre-registration · 2026-05-12
+
+**Pre-registration of test protocol** for the drive-axis F-003 hypothesis, written *before* any LED step-response data is fit. Captures predictions and falsifiers in advance to constrain the test against confirmation bias. PR-series in FOOTING is parallel to F-series (substrate findings) and M-series (methodological); PR entries lock in protocols before runs.
+
+**Risk this pre-registration guards against.** The naïve drive-axis F-003 test would sweep V across V_th and observe the exponential I-V curvature peak. That would rederive the Shockley diode equation and add nothing — the curvature peak is set by exponential math, not by cdv1's c→s→r structure. To avoid the "rederive Shockley" trap, the pre-registered protocol below picks observables, drive variables, and slow-resource dynamics that *can fail* in informative ways.
+
+**Observable (chit = 0 locus attachment).** The chit = 0 locus attaches to **optical output L_opt(t)**, NOT to the I-V curve. Rationale: the I-V curve is monotone exponential with no sharp electrical knee — there is no "regime transition" in I-V. The optical output has a real regime transition: below threshold L_opt ≈ 0 (sub-threshold spontaneous emission only — r-regime); above threshold L_opt scales with I (c-regime). The optical threshold is set by photon energy / charge, not by junction barrier; it differs from the electrical-current onset. **Pick L_opt upfront and stay on it.**
+
+**Drive variable.** Step V_drive through V_th. Plot the F-003 analog observable (see below) as a function of normalized drive (V_drive − V_th) / V_th.
+
+**Slow resource (CRITICAL).** Damping-axis substrates carry their slow resource intrinsically — the RLC mode IS the slow resource (ω₀ sets the natural timescale). LEDs at DC are nearly slow-resource-free; carrier dynamics are nanoseconds, way faster than any sustainable feedback loop in the substrate. **The natural slow resource for LEDs is junction temperature T_j.** Self-heating gives ms-to-s feedback: more I → more dissipated power → T_j rises → V_th drops (negative TC, ~−2 mV/°C for InGaN, ~−1 mV/°C for AlGaInP) → more I. **Without time-resolved thermal coupling in the protocol, the s-window will look like a smooth I-V curve and the test cannot distinguish "drive-axis-with-thermal-smearing" from "diodes are exponential."** Protocol must measure L_opt step response with the *full thermal-feedback loop closed* (i.e., steady-state operation, not transient pre-thermalization).
+
+**Predicted s-window width: nkT/q, not kT/q.** The "universal thermodynamic constant" framing dchit/dV = q/kT is exact only for n = 1 (ideality factor). Real LEDs have n ∈ [1, 2], higher when recombination current dominates over diffusion current. The s-window width is **nkT/q**, with n measurable per substrate instance. At 300 K with n ∈ [1.2, 2.4]: predicted width 30–60 mV. *Ideality factor n must be characterized per LED instance as a substrate-conditional parameter.* The data/leds.json currently lacks n values; v0.2 ingest should add `ideality_factor_n` field.
+
+**F-003 analog observable.** Mirror the F-003-rlc protocol structure. Step V_drive across V_th; for each drive level, measure L_opt step response; fit two candidate envelope forms (analogous to pure-exp vs algebraic-exp in RLC); compute RMS-residual ratio. The drive-axis analog is to be settled with the actual L_opt data — candidate forms:
+
+- "Pure exponential rise": L_opt(t) = L_steady · (1 − e^(−t/τ)) where τ is the thermal time constant.
+- "Algebraic-thermal envelope": L_opt(t) = L_steady · (1 − (1 + t/τ)·e^(−t/τ)) by analogy with RLC critical.
+
+ratio_minimum_value(V_drive − V_th) tracks the better-fit envelope vs the alternative across the drive sweep.
+
+**Predicted ratio_minimum_value behavior — quantitative pre-registration.**
+
+| Region | Drive | Predicted ratio_minimum_value |
+|---|---|---|
+| Deep subthreshold | V − V_th ≪ −nkT/q | ratio ≈ 1 (both envelopes equally wrong) |
+| s-window | |V − V_th| ≲ nkT/q (30–60 mV at 300 K) | **non-zero minimum** — floor set by nkT/q against substrate's natural drive scale |
+| Deep above threshold | V − V_th ≫ nkT/q | ratio rises again (thermal envelope mis-fits the post-threshold linear scaling) |
+
+**Falsifier (the critical commit).** If ratio_minimum_value across the sweep hits **zero** at V_drive = V_th — same as RLC's F-003 hit zero exactly at Q = 0.5 — then **drive-axis-with-thermal-smearing fails** as a framework prediction. Either:
+
+1. The framework is wrong on drive-axis substrates (cdv1's c→s→r is damping-axis-only), or
+2. Our slow-resource analysis is wrong (junction temperature isn't the relevant slow resource), or
+3. The substrate has a sharper transition than thermal smearing implies (some other physics dominates).
+
+A zero minimum is a strong failure mode. A non-zero minimum at width 30–60 mV is the predicted success.
+
+**Failure-mode interpretation (informative even on partial failure).**
+
+- Width *narrower* than nkT/q (e.g., <20 mV at 300 K) → chit slope steeper than predicted; substrate physics not captured by Shockley + thermal feedback alone.
+- Width *wider* than nkT/q (e.g., >100 mV) → slower thermal feedback than expected; T_j may not be the dominant slow resource; possibly carrier-density-saturation timescale (ABC recombination) is contributing.
+- Either failure mode is constraining and informative — the test is well-designed if it produces a clearly-readable outcome in any of these directions.
+
+**Protocol mirror.** Mirror F-003-rlc step-by-step:
+
+| F-003-rlc (damping-axis) | F-003-led (drive-axis) |
+|---|---|
+| Sweep Q ∈ [0.05, 10] | Sweep (V − V_th) / V_th ∈ [−0.3, +0.3] |
+| Fixed step input voltage | Fixed step input voltage above V_drive baseline |
+| Measure: capacitor voltage step response | Measure: L_opt step response |
+| Candidate forms: pure-exp, algebraic-exp | Candidate forms: pure-thermal, algebraic-thermal |
+| Compute ratio_minimum_value | Compute ratio_minimum_value |
+| F-003-rlc: zero at Q = 0.5 exactly | F-003-led: non-zero minimum width ~nkT/q at V = V_th |
+
+The qualitative difference (sharp zero vs noise-floored minimum) should be **visually obvious before any sophisticated analysis**. This is the framework move's first chance to fail visibly. If the F-003-led plot shows a sharp zero at V = V_th, the drive-axis-with-thermal-smearing extension fails.
+
+**Pre-registered actions on outcome.**
+
+- ratio_minimum > 0 with width 30–60 mV at 300 K → F-003-led PASS; cdv1 c→s→r structure extends to drive-axis substrates with substrate-conditional smearing width set by nkT/q.
+- ratio_minimum > 0 with width outside [20, 100] mV → F-003-led PARTIAL; record the actual width in the LED calibration record and update PR-002 with what slow-resource was actually dominant.
+- ratio_minimum = 0 (sharp zero, like RLC) → F-003-led FAIL; cdv1 c→s→r does NOT extend cleanly to drive-axis. Record failure as F-001-scope-limit was recorded: a substrate-conditional restriction on framework universality.
+
+**Substrate-conditional parameters to characterize before running test.**
+
+1. Ideality factor n per LED (from semilog I-V fit).
+2. Thermal coefficient of V_th (mV/°C, vendor-published).
+3. Thermal time constant (ms, often from thermal resistance × heat capacity).
+4. L_opt absolute calibration (W per photon-flux measurement).
+
+These are pre-registered as data-needed-before-test parameters. Without them, the test result is uninterpretable.
+
+**Status.** Pre-registration filed 2026-05-12, before Bath ABC dataset verification or any L_opt step-response data is fitted. led.md v0.2 and led.py updated 2026-05-12 to incorporate ideality factor n and junction temperature as the slow resource. F-003-led test cannot run until step-response data lands; PR-001 is the framework's commitment to predictions in advance.

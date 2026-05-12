@@ -54,12 +54,24 @@ LED substrate scaffolding committed:
 - [reference-driver/led.md](../reference-driver/led.md) v0.1 — substrate-class declaration, mode-separation status (mode-separated electrical → optical), F-001 applicability (yes, via η_wpe), F-003 applicability (OPEN — drive-axis method research-pending)
 - [mpa_relaxation_packs/led.py](../mpa_relaxation_packs/led.py) — kernel skeleton with `regime_drive_axis(V, V_th, T)` classifier, `chit_max_predicted(η_wpe)`, `LED` dataclass
 
-Outside-research run issued 2026-05-12 with explicit regional/language casting (Cree, Lumileds, Osram, Nichia, Citizen, Honglitronic, Refond, Everlight, MLS, Sanan, Samsung, LG Innotek, Epistar; sources from CNKI, J-STAGE, KISS, 1688). When data lands:
+**Phase F.1 step 2 landed 2026-05-12:**
 
-1. **Populate `data/leds.json`** with 15–20 LED candidates spanning chemistries and power classes
-2. **F-001-led test.** Compute chit_max bounds across the substrate-class. Predicted range: 0.10 (η_wpe 10%) to 0.69 (η_wpe 50%).
-3. **Drive-axis F-003 research.** With I-V curve data digitized across V_th for 3–5 canonical LEDs, look for a substrate-conditional signature analogous to RLC's algebraic-exponential factor at Q = 0.5. Candidate readings: exponential I-V curvature peak at V_th, carrier-lifetime relaxation behavior near threshold, small-signal admittance shape across threshold. This is **the framework-level open question** for drive-axis substrates.
-4. **F-003-cross-axis comparison.** Does the s-region smearing (kT/q ≈ 26 mV in LEDs) generalize to other drive-axis substrates? Lasers have *two* drive-axis transitions (diode threshold + lasing threshold). Plasma tubes have ionization threshold. Comparing the smearing widths across these would test the substrate-class fingerprint.
+- ✓ `data/leds.json` populated with 13 cross-source-converged LED candidates spanning chemistries (UV, blue, red, deep red, yellow-green, white), power classes (indicator through industrial high-power), and regions (Western USA, Western German, Japanese, Chinese, Korean, Taiwan).
+- ✓ F-001-led result: substrate-class spans widest chit_max envelope characterized — 0.084 (UV) to 0.693 (Samsung LM301B premium white). FOOTING F-001-led entry recorded.
+- ✓ **PR-001 pre-registration filed 2026-05-12** — drive-axis F-003 test protocol committed BEFORE running. Key pre-registrations:
+  - chit = 0 locus attaches to **L_opt** (not I-V — I-V would rederive Shockley)
+  - Slow resource: **junction temperature T_j** (ms-to-s thermal feedback, not ns carrier dynamics)
+  - Predicted s-window width: **n·kT/q** (30–60 mV at 300 K for n ∈ [1.2, 2.4]) — corrected from kT/q
+  - Predicted ratio_minimum_value: **non-zero** floor; falsifier = sharp zero at V_th would mean drive-axis-with-thermal-smearing fails
+  - Substrate-conditional parameters required before test: ideality factor n, thermal coefficient dV_th/dT_j, thermal time constant τ_th, L_opt absolute calibration
+
+**Phase F.1 step 3 — drive-axis F-003 test, gated on substrate-conditional parameters.** Before running the Bath ABC dataset analysis or NBSDC verification, the LED instances in `data/leds.json` need ideality factor n and thermal parameters filled in. Currently `ideality_factor_n` field exists in the LED dataclass but is None for all 13 entries.
+
+1. **Ingest ideality factor for 3-5 canonical LEDs** (Samsung LM301B, Cree XP-G3, Nichia NVSW219C-V2). From vendor datasheet semilog I-V or from published characterization papers. Typical n values for InGaN white LEDs at room temp: 1.5–2.0; AlGaInP red: 1.8–2.5; AlGaN UV: 2.0–4.0 (often higher).
+2. **Verify Bath ABC dataset** ([researchdata.bath.ac.uk](https://researchdata.bath.ac.uk)). Excel format expected; commercial InGaN LEDs across 0–500 mA L-I + I-V.
+3. **Run F-003-led test per PR-001 protocol.** L_opt step response across V_drive sweep, with thermal-feedback loop closed (steady-state operation, not transient pre-thermalization).
+4. **Compare ratio_minimum_value behavior to pre-registered predictions.** Three branches: PASS (width 30–60 mV, ratio > 0), PARTIAL (width outside [20, 100] mV), FAIL (sharp zero — record as scope-limit on drive-axis substrates).
+5. **F-003-cross-axis comparison** (if Phase F.1 step 3 lands). Does the s-region smearing generalize? Lasers have *two* drive-axis transitions (diode threshold + lasing threshold). Plasma tubes have ionization threshold. Comparing the smearing widths across these would test the substrate-class fingerprint.
 
 #### Phase F.2: secondary substrate menagerie
 
