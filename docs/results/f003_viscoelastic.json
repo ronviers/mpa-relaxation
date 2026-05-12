@@ -1,0 +1,156 @@
+{
+  "experiment": "f003_viscoelastic",
+  "run_at": "2026-05-12T13:40:04.213054+00:00",
+  "phase_d": true,
+  "substrate": "viscoelastic-damping-material",
+  "n_instances": 8,
+  "f_001_scope_limit": {
+    "applicable": false,
+    "reason": "Damping materials' dissipation IS the useful work \u2014 there is no separate 'useful output' mode. F-001 chit_max = -ln(1 - \u03b7_conversion) requires drive and useful-work to be in different modes (engine fuel \u2192 brake-power; loudspeaker electrical \u2192 acoustic; actuator electrical \u2192 mechanical). For pure-dissipative substrates, all input is loss by construction, \u03b7_conversion \u2192 1, chit_max \u2192 \u221e. F-001 form does not constrain this substrate-class. First substrate where F-001 hits a scope limit; reveals that F-001 is conditional on substrate-class having mode-separated drive vs useful-work.",
+    "framework_implication": "F-001 is not universally applicable across all driven-dissipative substrates. F-003 (regime structure from Q) is more general \u2014 it applies wherever a second-order damped oscillator is defined, including pure-dissipative substrates like viscoelastic damping. The framework's substrate-neutral content should distinguish 'mode-separated' substrates (F-001 applies) from 'pure-dissipative' substrates (F-003 applies but F-001 does not)."
+  },
+  "instances": [
+    {
+      "id": "3M_ISD-112",
+      "name": "3M ISD-112 Constrained-Layer Damping Film",
+      "composition": "acrylic copolymer viscoelastic",
+      "tan_delta_peak": 1.2,
+      "peak_temperature_C": 25,
+      "peak_frequency_Hz": 1000,
+      "Q_at_peak": 0.833,
+      "zeta_at_peak": 0.6,
+      "regime": "c",
+      "distance_from_s_boundary": 0.33299999999999996,
+      "notes": null
+    },
+    {
+      "id": "Sorbothane_50",
+      "name": "Sorbothane 50 Durometer",
+      "composition": "thermoset urethane polymer",
+      "tan_delta_peak": 1.0,
+      "peak_temperature_C": 25,
+      "peak_frequency_Hz": 100,
+      "Q_at_peak": 1.0,
+      "zeta_at_peak": 0.5,
+      "regime": "c",
+      "distance_from_s_boundary": 0.5,
+      "notes": null
+    },
+    {
+      "id": "EAR_Isodamp_C-1002",
+      "name": "EAR Isodamp C-1002 (polyurethane)",
+      "composition": "high-damping polyurethane",
+      "tan_delta_peak": 1.5,
+      "peak_temperature_C": 20,
+      "peak_frequency_Hz": 500,
+      "Q_at_peak": 0.667,
+      "zeta_at_peak": 0.75,
+      "regime": "c",
+      "distance_from_s_boundary": 0.16700000000000004,
+      "notes": null
+    },
+    {
+      "id": "3M_VHB_4910",
+      "name": "3M VHB 4910 Acrylic Foam Tape",
+      "composition": "acrylic foam (closed-cell)",
+      "tan_delta_peak": 0.8,
+      "peak_temperature_C": 25,
+      "peak_frequency_Hz": 100,
+      "Q_at_peak": 1.25,
+      "zeta_at_peak": 0.4,
+      "regime": "c",
+      "distance_from_s_boundary": 0.75,
+      "notes": null
+    },
+    {
+      "id": "natural_rubber_gum",
+      "name": "Natural Rubber Gum Stock",
+      "composition": "polyisoprene, lightly crosslinked",
+      "tan_delta_peak": 0.35,
+      "peak_temperature_C": 20,
+      "peak_frequency_Hz": 10,
+      "Q_at_peak": 2.857,
+      "zeta_at_peak": 0.175,
+      "regime": "c",
+      "distance_from_s_boundary": 2.357,
+      "notes": null
+    },
+    {
+      "id": "plasticized_PVC",
+      "name": "Plasticized PVC (commercial vinyl damping sheet)",
+      "composition": "polyvinyl chloride with plasticizer (typically DEHP)",
+      "tan_delta_peak": 1.8,
+      "peak_temperature_C": 20,
+      "peak_frequency_Hz": 200,
+      "Q_at_peak": 0.556,
+      "zeta_at_peak": 0.9,
+      "regime": "c",
+      "distance_from_s_boundary": 0.05600000000000005,
+      "notes": "Sits very close to s-boundary. Plasticizer content tunes the peak position; high-damping formulations cross into r-regime."
+    },
+    {
+      "id": "PU45A_high_damping",
+      "name": "High-Damping Polyurethane (PU45A typical)",
+      "composition": "polyurethane with crosslinker / glass-transition tuned to operating range",
+      "tan_delta_peak": 2.0,
+      "peak_temperature_C": 25,
+      "peak_frequency_Hz": 100,
+      "Q_at_peak": 0.5,
+      "zeta_at_peak": 1.0,
+      "regime": "s",
+      "distance_from_s_boundary": 0.0,
+      "notes": "Sits AT the s-boundary by formulation tuning. Industry-standard 'maximum damping' formulation."
+    },
+    {
+      "id": "butyl_rubber_HD",
+      "name": "Butyl Rubber, High-Damping Formulation",
+      "composition": "isobutylene-isoprene copolymer, high-tan-delta variant",
+      "tan_delta_peak": 2.3,
+      "peak_temperature_C": 25,
+      "peak_frequency_Hz": 500,
+      "Q_at_peak": 0.435,
+      "zeta_at_peak": 1.15,
+      "regime": "r",
+      "distance_from_s_boundary": 0.065,
+      "notes": "Sits in r-regime \u2014 overdamped by design. Trades transient response speed for maximum dissipation."
+    }
+  ],
+  "regime_distribution": {
+    "n_materials": 8,
+    "regime_counts": {
+      "c": 6,
+      "s": 1,
+      "r": 1
+    },
+    "Q_range": [
+      0.435,
+      2.857
+    ],
+    "Q_median": 0.75,
+    "n_materials_within_0_17_of_critical": 4,
+    "fraction_within_0_17_of_critical": 0.5
+  },
+  "cross_substrate_class_fingerprint": {
+    "viscoelastic_Q_range": [
+      0.435,
+      2.857
+    ],
+    "viscoelastic_Q_median": 0.75,
+    "vs_engine_Camry_chit_observed": 0.41,
+    "vs_actuator_mdpi_plastic_chit_max_bound": 0.752,
+    "vs_actuator_pyhddbenchmark_Q_open_median": 30.0,
+    "vs_actuator_pyhddbenchmark_Q_closedloop_median": 1.44,
+    "vs_rlc_F003_signature_Q": 0.5,
+    "vs_loudspeaker_chit_observed_range": [
+      0.003,
+      0.014
+    ],
+    "interpretation": "Viscoelastic damping materials cluster Q in [0.435, 2.857] with median 0.750. 4 of 8 instances sit within 0.17 of critical damping (Q = 0.5). One instance (PU45A) lands AT Q = 0.5 by formulation tuning \u2014 substrate engineering explicitly targets the s-boundary. The substrate-class is uniquely well-aligned with cdv1's SOC attractor: the *material composition* IS the tuning knob, and the design objective IS to land at chit \u2248 0."
+  },
+  "regime_structure_stress_test_verdict": {
+    "all_instances_categorized": true,
+    "all_regimes_represented": true,
+    "verdict": "PASS",
+    "interpretation": "Substrate-class spans all three regimes (c, s, r) across n=8 published instances. cdv1 regime structure holds across the material heterogeneity. The substrate-class fingerprint is explicitly engineered to span c-to-r via formulation tuning. F-003's c\u2192s\u2192r structure is *substrate-neutral* in this case (no exceptions). F-001 is the substrate-conditional one, with this substrate-class falling outside its scope."
+  }
+}

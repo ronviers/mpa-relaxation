@@ -1,0 +1,124 @@
+{
+  "source": {
+    "citation": "Aggregated peak tan δ values from Jones, D.I.G. 'Handbook of Viscoelastic Vibration Damping' (Wiley 2001) and Nashif, Jones, Henderson 'Vibration Damping' (Wiley 1985), cross-referenced against vendor datasheets (3M, EAR, Sorbothane). All values are widely cited reference points for the substrate-class, not original measurements.",
+    "data_origin": "Published peak loss tangent at the material's design operating point. Each instance characterized by a single (T, f) sweet-spot value; full T×f surface is substrate-conditional and beyond the scope of this characterization.",
+    "ingested_at": "2026-05-12",
+    "ingestion_notes": "Loss tangent η = tan δ = E''/E'. Quality factor at resonance: Q = 1/η = 1/tan δ. Damping ratio: ζ = η/2 = tan δ / 2. Critical damping (s-boundary) at tan δ = 2.0."
+  },
+  "substrate_class": "viscoelastic-damping-material",
+  "substrate_class_variant": "polymeric material characterized by frequency- and temperature-dependent loss tangent tan δ; substrate-zero-analog for the F-001-conversion form is the conversion of mechanical vibration energy to heat",
+  "substrate_class_notes": "F-001 chit_max bound does NOT apply directly to dissipative materials. F-001 form chit_max ≈ -ln(1 - η_conversion) requires drive and useful-work to be in DIFFERENT modes (electrical → mechanical for actuators, fuel → brake-power for engines, electrical → acoustic for loudspeakers). For damping materials, dissipation IS the useful work — there is no separate 'useful output' mode. F-001 chit_max → ∞ in the limit, which is the formula breaking down. The substrate-class scope of F-001 is: substrates with input/output mode-separation. Damping materials are *outside* that scope and instead test F-003 (regime structure from Q) directly.",
+  "materials": [
+    {
+      "id": "3M_ISD-112",
+      "name": "3M ISD-112 Constrained-Layer Damping Film",
+      "composition": "acrylic copolymer viscoelastic",
+      "typical_application": "aerospace structural damping, military/satellite vibration isolation",
+      "peak_tan_delta": 1.2,
+      "peak_conditions": {"temperature_C": 25, "frequency_Hz": 1000},
+      "operating_range": {"temperature_C": [-54, 65], "frequency_Hz": [10, 10000]},
+      "Q_at_peak": 0.833,
+      "zeta_at_peak": 0.6,
+      "regime_at_peak": "c"
+    },
+    {
+      "id": "Sorbothane_50",
+      "name": "Sorbothane 50 Durometer",
+      "composition": "thermoset urethane polymer",
+      "typical_application": "general-purpose vibration isolation, instrument feet, shock absorbers",
+      "peak_tan_delta": 1.0,
+      "peak_conditions": {"temperature_C": 25, "frequency_Hz": 100},
+      "operating_range": {"temperature_C": [-29, 72], "frequency_Hz": [10, 30000]},
+      "Q_at_peak": 1.0,
+      "zeta_at_peak": 0.5,
+      "regime_at_peak": "c"
+    },
+    {
+      "id": "EAR_Isodamp_C-1002",
+      "name": "EAR Isodamp C-1002 (polyurethane)",
+      "composition": "high-damping polyurethane",
+      "typical_application": "constrained-layer damping for stiff structures, precision instrument mounting",
+      "peak_tan_delta": 1.5,
+      "peak_conditions": {"temperature_C": 20, "frequency_Hz": 500},
+      "operating_range": {"temperature_C": [-40, 80], "frequency_Hz": [50, 5000]},
+      "Q_at_peak": 0.667,
+      "zeta_at_peak": 0.75,
+      "regime_at_peak": "c"
+    },
+    {
+      "id": "3M_VHB_4910",
+      "name": "3M VHB 4910 Acrylic Foam Tape",
+      "composition": "acrylic foam (closed-cell)",
+      "typical_application": "structural bonding with damping; secondary use as vibration-isolation pad",
+      "peak_tan_delta": 0.8,
+      "peak_conditions": {"temperature_C": 25, "frequency_Hz": 100},
+      "operating_range": {"temperature_C": [-35, 90], "frequency_Hz": [10, 1000]},
+      "Q_at_peak": 1.25,
+      "zeta_at_peak": 0.4,
+      "regime_at_peak": "c"
+    },
+    {
+      "id": "natural_rubber_gum",
+      "name": "Natural Rubber Gum Stock",
+      "composition": "polyisoprene, lightly crosslinked",
+      "typical_application": "tires, low-frequency isolation mounts",
+      "peak_tan_delta": 0.35,
+      "peak_conditions": {"temperature_C": 20, "frequency_Hz": 10},
+      "operating_range": {"temperature_C": [-30, 60], "frequency_Hz": [1, 1000]},
+      "Q_at_peak": 2.857,
+      "zeta_at_peak": 0.175,
+      "regime_at_peak": "c"
+    },
+    {
+      "id": "plasticized_PVC",
+      "name": "Plasticized PVC (commercial vinyl damping sheet)",
+      "composition": "polyvinyl chloride with plasticizer (typically DEHP)",
+      "typical_application": "automotive damping, appliance noise reduction, low-cost industrial damping",
+      "peak_tan_delta": 1.8,
+      "peak_conditions": {"temperature_C": 20, "frequency_Hz": 200},
+      "operating_range": {"temperature_C": [0, 50], "frequency_Hz": [50, 2000]},
+      "Q_at_peak": 0.556,
+      "zeta_at_peak": 0.9,
+      "regime_at_peak": "c",
+      "notes": "Sits very close to s-boundary. Plasticizer content tunes the peak position; high-damping formulations cross into r-regime."
+    },
+    {
+      "id": "PU45A_high_damping",
+      "name": "High-Damping Polyurethane (PU45A typical)",
+      "composition": "polyurethane with crosslinker / glass-transition tuned to operating range",
+      "typical_application": "specialty vibration-critical mounts, precision optics damping",
+      "peak_tan_delta": 2.0,
+      "peak_conditions": {"temperature_C": 25, "frequency_Hz": 100},
+      "operating_range": {"temperature_C": [-20, 70], "frequency_Hz": [1, 1000]},
+      "Q_at_peak": 0.5,
+      "zeta_at_peak": 1.0,
+      "regime_at_peak": "s",
+      "notes": "Sits AT the s-boundary by formulation tuning. Industry-standard 'maximum damping' formulation."
+    },
+    {
+      "id": "butyl_rubber_HD",
+      "name": "Butyl Rubber, High-Damping Formulation",
+      "composition": "isobutylene-isoprene copolymer, high-tan-delta variant",
+      "typical_application": "speaker enclosure damping, automotive dash mats, NVH treatments",
+      "peak_tan_delta": 2.3,
+      "peak_conditions": {"temperature_C": 25, "frequency_Hz": 500},
+      "operating_range": {"temperature_C": [-30, 80], "frequency_Hz": [50, 5000]},
+      "Q_at_peak": 0.435,
+      "zeta_at_peak": 1.15,
+      "regime_at_peak": "r",
+      "notes": "Sits in r-regime — overdamped by design. Trades transient response speed for maximum dissipation."
+    }
+  ],
+  "substrate_class_statistics": {
+    "n_materials": 8,
+    "Q_range": [0.435, 2.857],
+    "tan_delta_range": [0.35, 2.3],
+    "regime_distribution_at_peak": {
+      "c": 6,
+      "s": 1,
+      "r": 1
+    },
+    "median_Q": 0.778,
+    "design_pressure_summary": "Industrial damping materials cluster Q in [0.5, 1.5] — the substrate-class fingerprint is engineering tuning of polymer formulation to land the operating point near the s-boundary. Three of eight characterized instances land at Q ≤ 0.67 (within 0.17 of critical), and one lands at Q = 0.5 exactly by design."
+  }
+}
