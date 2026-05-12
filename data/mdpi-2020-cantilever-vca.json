@@ -1,0 +1,60 @@
+{
+  "source": {
+    "citation": "Sutton, J.; Tseng, T.-L.B. Effect of Electromagnetic Damping on System Performance of Voice-Coil Actuator Applied to Balancing-Type Scale. Actuators 2020, 9, 8.",
+    "doi": "10.3390/act9010008",
+    "url": "https://www.mdpi.com/2076-0825/9/1/8",
+    "license": "CC BY 4.0",
+    "data_origin": "Published paper Table 2 (parameters), Figures 12 and 13 (step responses; not yet digitized).",
+    "ingested_at": "2026-05-12"
+  },
+  "substrate_class": "voice-coil-linear-actuator",
+  "substrate_class_variant": "bare cantilever beam + bobbin + permanent magnet, no cone/cavity",
+  "shared_parameters": {
+    "moving_mass_kg": 0.0652,
+    "suspension_stiffness_npm": 1485.0,
+    "coil_resistance_ohm": 28.9,
+    "coil_inductance_h": 0.024535,
+    "force_constant_BL_npa": 28.46,
+    "natural_frequency_radps": 150.92,
+    "natural_frequency_hz": 24.02,
+    "parameter_provenance": "Paper Table 2; values verified against File B research output 2026-05-12."
+  },
+  "instances": {
+    "aluminum_bobbin": {
+      "tuning_axis": "eddy-current damping from conductive bobbin material",
+      "damping_coefficient_nspm": 300.0,
+      "computed_damping_ratio_zeta": 15.244,
+      "computed_quality_factor_Q": 0.0328,
+      "regime": "r",
+      "regime_notes": "Deeply overdamped. Eddy currents in the aluminum bobbin dominate dissipation. The two-real-exponentials regime (no oscillation). chit at steady state operation is well-defined but no resonance peak to read at."
+    },
+    "plastic_bobbin": {
+      "tuning_axis": "eddy-current damping from conductive bobbin material",
+      "damping_coefficient_nspm": 25.0,
+      "computed_damping_ratio_zeta": 1.270,
+      "computed_quality_factor_Q": 0.394,
+      "regime": "r",
+      "regime_notes": "Lightly overdamped, but still below Q = 0.5 (s-boundary). Approaching critical damping but does not reach it. Step response is two-real-exponentials, slower-decaying mode dominates."
+    }
+  },
+  "step_response_data": {
+    "status": "not_yet_digitized",
+    "source_figures": [
+      "Figure 12: Step-input deflection response, aluminum bobbin (heavy eddy damping).",
+      "Figure 13: Step-input deflection response, plastic bobbin (light damping)."
+    ],
+    "digitization_plan": "Use WebPlotDigitizer or equivalent to extract (t, deflection) pairs from each figure. Sample density: enough to fit the decay tail. Pending Phase A step 6 (smoke experiment)."
+  },
+  "predictions_to_test_in_phase_a": {
+    "F-001-actuator-mdpi-2020": {
+      "description": "chit_max bounded by -ln(1 - eta_electromechanical)",
+      "predicted_bound_lower": "Requires electromechanical efficiency eta = useful mechanical work / electrical input. Not directly published; derivable from kf, R, mass, k.",
+      "test_status": "pending kernel"
+    },
+    "F-003-actuator-mdpi-2020-partial": {
+      "description": "Decay tail shape across two damping levels (Al vs plastic).",
+      "predicted": "Both r-regime → both exponential (sum of two real exponentials, slower mode dominating). cdv1 predicts algebraic settling only at Q = 0.5 exactly; both instances are off-attractor.",
+      "test_status": "pending step-response digitization and fit"
+    }
+  }
+}

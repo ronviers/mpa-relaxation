@@ -97,3 +97,17 @@ Pairing note: substrate-two RLC (already in roadmap) reduces to RC in the limit 
 ### §7.4 TeachSpin Torsional Oscillator (pocket fallback)
 
 Pedagogical apparatus designed for demonstrating c→s→r damping regimes via tunable eddy-current damping. Rotary geometry, mathematically identical second-order oscillator. Held as the substrate to fall through to if the c→s→r walk via RLC feels too synthetic and we want real-apparatus data. [teachspin.com/torsional-oscillator](https://www.teachspin.com/torsional-oscillator).
+
+### §7.5 LEDs — threshold without coherence
+
+Light-emitting diodes have a sharp forward-voltage threshold (~1.7V red, ~3.3V blue/white) below which essentially no current flows. Above threshold, current rises exponentially and photons emit incoherently. **The threshold IS the c→s→r-style regime transition** — below = r-regime (no sustained NESS), at = s-boundary, above = c-regime (sustained current and emission) — *but without the coherence emergence that lasers have at their lasing threshold.* Lasers have the same threshold structure *plus* a coherence symmetry-breaking; LEDs have the threshold without the coherence; plasma/discharge tubes have the threshold plus multi-component nonequilibrium dynamics ("messy"). LEDs are the cleanest substrate-class for testing the regime-structure part of cdv1 *without* the order-parameter-emergence complication.
+
+**Taxonomy insight worth recording:** the c→s→r structure shows up via at least two distinct axes across substrates:
+- **Damping-axis substrates** (voice coil actuators, RLC, loudspeakers, tuning forks): c/s/r walks via Q (damping ratio). Drive level just shifts amplitude.
+- **Drive-axis substrates** (LEDs, lasers, plasma tubes, semiconductor lasers, neural firing thresholds): c/s/r walks via drive level (voltage / pump / input current relative to threshold). "Damping" is a different parameter and doesn't walk regimes.
+
+Lasers carry *both* axes (cavity Q is one substrate parameter; pump level above lasing threshold is the regime-walk drive). cdv1's universality claim is sharper if it holds across both axis types — and LEDs are the cleanest single-axis drive-substrate to test, with abundant datasheet data (I-V curves, photometric efficiency, thermal characteristics) standardized across the industry.
+
+Data: every LED datasheet has forward voltage, current vs voltage curves, luminous efficacy. Across LED chemistries (red, green, blue, white, IR, UV), threshold varies — multiple "configured instances" of the substrate-class trivially available.
+
+Holds for substrate-N as the drive-axis exemplar. The actuator/RLC/materials chain is all damping-axis; LEDs (then eventually lasers) are the drive-axis arm of the universality test.

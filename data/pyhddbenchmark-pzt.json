@@ -1,0 +1,34 @@
+{
+  "source": {
+    "repository": "https://github.com/macs-lab/PyHDDBenchmark",
+    "file_in_repo": "plant.py",
+    "license": "see upstream repo (BSD-style per macs-lab convention)",
+    "originating_benchmark": "IEEJ Investigating R&D Committee on Precision Servo Technology, Atsumi & Yabui 2020 IEEE TIE 67(11):9184",
+    "data_origin": "PZT (piezoelectric) secondary actuator in dual-stage HDD positioning system. Modal-sum decomposition.",
+    "ingested_at": "2026-05-12",
+    "ingestion_notes": "Modal parameters lifted directly from plant.py via WebFetch on 2026-05-12. Source values in Hz; converted to rad/s by 2π factor as in the source code."
+  },
+  "substrate_class": "voice-coil-linear-actuator",
+  "substrate_class_variant": "PZT secondary actuator in dual-stage HDD positioning system. Strictly piezoelectric, not voice-coil — same substrate-class via second-order mechanical oscillator structure but different drive mechanism.",
+  "substrate_class_notes": "PZT actuators are technically a different drive-coupling than voice coil (electrostrictive vs Lorentz), but the substrate's mechanical response is the same second-order damped oscillator. Reading PZT under the voice-coil-actuator substrate-class tests whether the substrate-class scope captures both drive mechanisms or whether PZT earns its own class. Substrate-class scope decision deferred to Phase A discussion.",
+  "modes": [
+    {"index": 0, "f_hz": 14800,  "omega_radps": 92991.1,  "zeta": 0.025, "kappa_residue": -0.005, "Q": 20.0,    "regime": "c"},
+    {"index": 1, "f_hz": 21500,  "omega_radps": 135088.3, "zeta": 0.03,  "kappa_residue": -0.01,  "Q": 16.667,  "regime": "c"},
+    {"index": 2, "f_hz": 28000,  "omega_radps": 175929.2, "zeta": 0.05,  "kappa_residue": -0.1,   "Q": 10.0,    "regime": "c"},
+    {"index": 3, "f_hz": 40200,  "omega_radps": 252584.1, "zeta": 0.008, "kappa_residue": 0.8,    "Q": 62.5,    "regime": "c"},
+    {"index": 4, "f_hz": 42050,  "omega_radps": 264209.2, "zeta": 0.008, "kappa_residue": 0.3,    "Q": 62.5,    "regime": "c"},
+    {"index": 5, "f_hz": 44400,  "omega_radps": 278972.4, "zeta": 0.01,  "kappa_residue": -0.25,  "Q": 50.0,    "regime": "c"},
+    {"index": 6, "f_hz": 46500,  "omega_radps": 292168.0, "zeta": 0.02,  "kappa_residue": 0.3,    "Q": 25.0,    "regime": "c"},
+    {"index": 7, "f_hz": 100000, "omega_radps": 628318.5, "zeta": 0.3,   "kappa_residue": 10.0,   "Q": 1.667,   "regime": "c"}
+  ],
+  "regime_summary": {
+    "total_modes": 8,
+    "c_regime_modes": 8,
+    "s_regime_modes": 0,
+    "r_regime_modes": 0,
+    "Q_range": [1.667, 62.5],
+    "f_range_hz": [14800, 100000],
+    "f_range_radps": [92991.1, 628318.5],
+    "notes": "Mode 7 (ζ=0.3, Q=1.667) is much closer to s-boundary than the rest. Still c-regime (Q > 0.5) but the broadband-damped mode of the structure — likely a designed-in roll-off rather than a structural resonance peak."
+  }
+}
