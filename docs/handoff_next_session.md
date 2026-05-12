@@ -1,103 +1,87 @@
 # Handoff — next session
 
-## Current state (2026-05-12)
+## Current state (end of session 2026-05-12)
 
-Phases A, B, C (steps 1–2), and D have substantially landed. Five substrate-classes characterized in the cross-substrate fingerprint; three driver profiles formalized with explicit mode-separation declaration. cdv1's substrate-conditional / substrate-neutral split now operationally tested and refined.
+Six substrate-classes characterized end-to-end. cdv1's substrate-conditional/substrate-neutral split is operationally tested and refined. F-001 demoted from universal to substrate-conditional (applies only to mode-separated substrates). F-002 retracted as universal and replaced by F-002-contrast + F-002-restoration. F-003 elevated to substrate-neutral (passes across mode-separated, pure-dissipative, and pre-registered for drive-axis). The substrate-class API formalizes mode-separation declaration and F-001/F-003 applicability per driver profile.
 
 **Findings recorded in [docs/journey/FOOTING.md](journey/FOOTING.md):**
 
-| Code | Title | Date |
+| Code | Title | Verdict |
 |---|---|---|
-| F-002-contrast | SOC attractor is substrate-conditional, not universal | 2026-05-12 |
-| F-003-rlc | c→s→r recovery-tail walk confirmed in textbook substrate | 2026-05-12 |
-| F-001-actuator-mdpi | chit_max bound from electromechanical coupling | 2026-05-12 |
-| M-001 | F-003 algebraic-signature test has ~30 dB SNR floor | 2026-05-12 |
-| F-002-restoration | Partial: controller pulls plant 1–2 decades toward s-boundary | 2026-05-12 |
-| F-001-scope-limit | F-001 has substrate-class scope; F-003 more general | 2026-05-12 |
-| F-003-viscoelastic | Regime structure stress test passes across material heterogeneity | 2026-05-12 |
+| F-002-contrast | SOC attractor is substrate-conditional, not universal | confirmed |
+| F-003-rlc | c→s→r recovery-tail walk confirmed in textbook substrate | PASS (exact zero at Q=0.5) |
+| F-001-actuator-mdpi | chit_max bound from electromechanical coupling | confirmed (bound; not measured) |
+| M-001 | F-003 algebraic-signature test has ~30 dB SNR floor | methodological |
+| F-002-restoration | Partial: controller pulls plant 1–2 decades toward s-boundary | PARTIAL (Q_cl ≈ 1.4, not 0.5) |
+| F-001-scope-limit | F-001 has substrate-class scope; F-003 more general | confirmed |
+| F-003-viscoelastic | Regime structure passes substrate-class heterogeneity | PASS (all 3 regimes within single substrate-class) |
+| F-001-led | LEDs span widest chit_max envelope of any substrate-class | confirmed (0.084 to 0.693) |
+| PR-001 | Drive-axis F-003 protocol pre-registration | committed; test pending data |
 
-**Substrate-class taxonomy refined:**
+**Substrate-class taxonomy (formalized in driver profiles):**
 
-| Substrate-class type | F-001 applies | F-003 applies | Driver profile |
-|---|---|---|---|
-| Mode-separated (engine, speaker, actuator) | ✓ (with η_conversion) | ✓ | [voice-coil-actuator.md](../reference-driver/voice-coil-actuator.md) |
-| Pure-dissipative (viscoelastic damping, friction, RC) | ✗ vacuous | ✓ | [viscoelastic-damping-material.md](../reference-driver/viscoelastic-damping-material.md) |
-| Use-case dependent (RLC) | conditional | ✓ | [rlc-circuit.md](../reference-driver/rlc-circuit.md) |
+| Substrate-class | Type | F-001 | F-003 | Driver profile |
+|---|---|---|---|---|
+| IC engines (cited mpa-engine) | mode-separated | ✓ | not tested | (cited from mpa-engine) |
+| Voice coil actuators | mode-separated | ✓ confirmed | not tested directly | [voice-coil-actuator.md](../reference-driver/voice-coil-actuator.md) v0.2 |
+| RLC | use-case dependent | conditional | ✓ confirmed (exact) | [rlc-circuit.md](../reference-driver/rlc-circuit.md) v0.1 |
+| Viscoelastic damping | pure-dissipative | ✗ scope-limit | ✓ stress-test PASS | [viscoelastic-damping-material.md](../reference-driver/viscoelastic-damping-material.md) v0.1 |
+| LEDs (drive-axis) | mode-separated + drive-axis | ✓ confirmed (widest envelope) | PRE-REGISTERED (PR-001) | [led.md](../reference-driver/led.md) v0.2 |
+| Loudspeakers | mode-separated | shelved | shelved | [shelved-loudspeaker-research.md](../data/sources/shelved-loudspeaker-research.md) |
 
-Each driver profile declares `substrate_class_type`, `drive_mode`, `useful_work_mode`, `f_001_applicability`, `f_003_applicability` in the header. Future substrate ingests use this template; mode-separation status determines which framework invariants are applicable.
+**Cross-substrate fingerprint, 6 substrate-classes:**
 
-**Cross-substrate fingerprint, 5 substrate-classes:**
-
-| Substrate | Q at design operating point | Mechanism toward chit ≈ 0 |
+| Substrate | Operating chit / Q at design | Mechanism toward chit ≈ 0 |
 |---|---|---|
 | IC engine at idle (mpa-engine) | chit ≈ 0 exactly | Real-time ECU feedback |
-| Loudspeaker driver (Phase E shelved) | chit ≈ 0.003–0.014 | Acoustic radiation cap |
-| VCA open-loop ([data/pyhddbenchmark-vcm.json](../data/pyhddbenchmark-vcm.json)) | Q ≈ 12.5–71 (deep c) | Sharp resonances by design |
-| VCA closed-loop ([F-002-restoration](journey/FOOTING.md)) | Q ≈ 1.4 | Bandwidth-damping tradeoff |
-| Viscoelastic damping ([F-003-viscoelastic](journey/FOOTING.md)) | Q median 0.75, s-clustering | Polymer compositional engineering |
-| RLC textbook (substrate-two) | Q tunable | Resistor selection |
+| Loudspeaker (shelved) | chit ≈ 0.003–0.014 | Acoustic radiation cap |
+| Voice coil actuator open-loop | Q ≈ 12.5–71 | None — externally damped |
+| Voice coil actuator closed-loop | Q ≈ 1.4 | Bandwidth-damping tradeoff |
+| Viscoelastic damping | Q median 0.75, s-cluster | Polymer compositional engineering |
+| RLC | Q tunable | Resistor selection |
+| **LEDs (drive-axis)** | **chit_max ≤ 0.084–0.693** | **chemistry + carrier injection physics** |
 
 ## What's queued
 
-### Phase E: unshelve loudspeakers (rhetorical-substrate closing)
+### Phase F.1 step 3 — drive-axis F-003 test (PR-001 protocol)
 
-1. **Read loudspeaker as configured instance of substrate-zero.** Voice coil actuator + cone load + cavity. Prior research in [shelved-loudspeaker-research.md](../data/sources/shelved-loudspeaker-research.md). Adds the audiophile c→s→r vocabulary back into the rhetorical surface for external publication.
-2. **F-001-loudspeaker.** Compute chit_max bound from acoustic efficiency η_acoustic ≈ 0.5–3% across the 3 verified candidates (Scan-Speak Ellipticor 21WE, Scan-Speak Classic 15W/8534T00, B&C 6CXN36). Predicted chit_max ≈ 0.003–0.014. Confirms loudspeaker substrate-class fingerprint.
-3. **Driver profile for loudspeaker.** Mode-separated (electrical → acoustic). F-001 applies. F-003 applies. Substrate-class instance of voice-coil-linear-actuator with the cone+cavity load.
+**Prerequisites done:** substrate-conditional parameters (ideality factor n, thermal coefficient dV_th/dT_j, thermal time constant τ_th) populated for all 13 LEDs in [data/leds.json](../data/leds.json). Substrate-class predicted s-window width range: 41.4–77.6 mV at 300 K (typical InGaN/AlGaInP cluster 41–52 mV; Toyoda UV outlier at 77.6 mV with n=3.0).
 
-### Phase F: substrate menagerie expansion
+**Remaining gate:** L_opt step-response data. The pre-registered protocol requires measured L_opt(t) under V_drive step input across the V_th window with thermal-feedback loop closed. Path forward:
 
-#### Phase F.1: LEDs (substrate-N, drive-axis) — scaffold landed 2026-05-12, data pending
+1. **Verify Bath ABC-recombination dataset** ([researchdata.bath.ac.uk](https://researchdata.bath.ac.uk)). Excel format; commercial InGaN LEDs across 0–500 mA L-I + I-V. Direct test candidate.
+2. **Verify NBSDC China LED Optoelectronic Characteristics** ([nbsdc.cn](https://www.nbsdc.cn)). 4.42 MB downloadable; full I-V, EQE, spectral curves.
+3. **Run F-003-led per PR-001 protocol** when data lands. Mirror F-003-rlc step-by-step (sweep variable swapped from Q to (V−V_th)/V_th, observable swapped from capacitor voltage to L_opt). Predicted outcomes (pre-registered):
+   - **PASS**: ratio_minimum > 0, width 30–60 mV (typical) or up to 78 mV (UV with high n). Drive-axis-with-thermal-smearing confirmed; cdv1 c→s→r extends to drive-axis substrates.
+   - **PARTIAL**: width outside [20, 100] mV. Record actual slow-resource in calibration record.
+   - **FAIL**: sharp zero at V = V_th (like RLC). Drive-axis-with-thermal-smearing fails; record as scope-limit on framework.
 
-LED substrate scaffolding committed:
+### Phase E — unshelve loudspeakers (rhetorical closure)
 
-- [reference-driver/led.md](../reference-driver/led.md) v0.1 — substrate-class declaration, mode-separation status (mode-separated electrical → optical), F-001 applicability (yes, via η_wpe), F-003 applicability (OPEN — drive-axis method research-pending)
-- [mpa_relaxation_packs/led.py](../mpa_relaxation_packs/led.py) — kernel skeleton with `regime_drive_axis(V, V_th, T)` classifier, `chit_max_predicted(η_wpe)`, `LED` dataclass
+Read loudspeaker as configured instance of substrate-zero (voice coil actuator + cone + cavity load). Prior research at [shelved-loudspeaker-research.md](../data/sources/shelved-loudspeaker-research.md): 8 raw-driver candidates from Voice Coil magazine, SEAS A26 + Variovent tunable testbed, 3 efficiency values giving chit_max ≈ 0.003–0.014. Adds audiophile c→s→r vocabulary and carb-tuning everyman analogy back into the rhetorical surface for external publication.
 
-**Phase F.1 step 2 landed 2026-05-12:**
+### Phase F.2 — substrate menagerie expansion
 
-- ✓ `data/leds.json` populated with 13 cross-source-converged LED candidates spanning chemistries (UV, blue, red, deep red, yellow-green, white), power classes (indicator through industrial high-power), and regions (Western USA, Western German, Japanese, Chinese, Korean, Taiwan).
-- ✓ F-001-led result: substrate-class spans widest chit_max envelope characterized — 0.084 (UV) to 0.693 (Samsung LM301B premium white). FOOTING F-001-led entry recorded.
-- ✓ **PR-001 pre-registration filed 2026-05-12** — drive-axis F-003 test protocol committed BEFORE running. Key pre-registrations:
-  - chit = 0 locus attaches to **L_opt** (not I-V — I-V would rederive Shockley)
-  - Slow resource: **junction temperature T_j** (ms-to-s thermal feedback, not ns carrier dynamics)
-  - Predicted s-window width: **n·kT/q** (30–60 mV at 300 K for n ∈ [1.2, 2.4]) — corrected from kT/q
-  - Predicted ratio_minimum_value: **non-zero** floor; falsifier = sharp zero at V_th would mean drive-axis-with-thermal-smearing fails
-  - Substrate-conditional parameters required before test: ideality factor n, thermal coefficient dV_th/dT_j, thermal time constant τ_th, L_opt absolute calibration
+Substrate backlog in [SOURCES.md §7](../data/sources/SOURCES.md):
 
-**Phase F.1 step 3 — drive-axis F-003 test, gated on substrate-conditional parameters.** Before running the Bath ABC dataset analysis or NBSDC verification, the LED instances in `data/leds.json` need ideality factor n and thermal parameters filled in. Currently `ideality_factor_n` field exists in the LED dataclass but is None for all 13 entries.
+- **§7.1 Stepper motors** — multi-stable actuator configuration; inter-step ringing as F-003 read.
+- **§7.2 Mechanical switches / debounce** — universal microelectronics-scale tuning problem.
+- **§7.3 RC circuits** — first-order endpoint of substrate-two; r-regime limit reading.
+- **Lasers** — both drive-axis (pump threshold) AND damping-axis (cavity Q). Tests whether cdv1 universality holds across simultaneous axis-stacking. Original substrate cdv1 was derived from; recovery, not reach.
 
-1. **Ingest ideality factor for 3-5 canonical LEDs** (Samsung LM301B, Cree XP-G3, Nichia NVSW219C-V2). From vendor datasheet semilog I-V or from published characterization papers. Typical n values for InGaN white LEDs at room temp: 1.5–2.0; AlGaInP red: 1.8–2.5; AlGaN UV: 2.0–4.0 (often higher).
-2. **Verify Bath ABC dataset** ([researchdata.bath.ac.uk](https://researchdata.bath.ac.uk)). Excel format expected; commercial InGaN LEDs across 0–500 mA L-I + I-V.
-3. **Run F-003-led test per PR-001 protocol.** L_opt step response across V_drive sweep, with thermal-feedback loop closed (steady-state operation, not transient pre-thermalization).
-4. **Compare ratio_minimum_value behavior to pre-registered predictions.** Three branches: PASS (width 30–60 mV, ratio > 0), PARTIAL (width outside [20, 100] mV), FAIL (sharp zero — record as scope-limit on drive-axis substrates).
-5. **F-003-cross-axis comparison** (if Phase F.1 step 3 lands). Does the s-region smearing generalize? Lasers have *two* drive-axis transitions (diode threshold + lasing threshold). Plasma tubes have ionization threshold. Comparing the smearing widths across these would test the substrate-class fingerprint.
+## Gotchas surfaced (carry forward)
 
-#### Phase F.2: secondary substrate menagerie
-
-Substrate backlog entries in [SOURCES.md §7](../data/sources/SOURCES.md), ranked by activation criteria:
-
-- **§7.1 Stepper motors.** Multi-stable actuator configuration; inter-step ringing as F-003 read.
-- **§7.2 Mechanical switches / debounce.** Universal microelectronics-scale tuning problem.
-- **§7.3 RC circuits.** First-order endpoint of substrate-two; useful as r-regime limit reading.
-
-### Phase A step 7 (deferred): PyHDDBenchmark η_em extraction
-
-Modal plant parameters in plant.py don't expose (BL, R, c) per mode. To compute F-001-actuator-pyhdd, would need either (a) the underlying physical parameters from Atsumi & Yabui 2020 IEEE TIE 67(11):9184, or (b) back-computation from Fre_Resp.json under explicit assumptions. Defer unless a specific test requires it.
-
-### Phase C step 3 (deferred, low leverage): time-domain Q_cl tightening
-
-F-002-restoration found Q_cl ≈ 1.4 via 2nd-order M_s approximation. Tighter estimate via running PyHDDBenchmark's full simulation and measuring overshoot in position trajectory. Qualitative result is solid (Q_cl is definitively not 0.5); decimal-point tightening is low-leverage.
-
-## Gotchas surfaced (carried forward)
-
-- **Multimodal substrates.** PyHDDBenchmark VCM is 16-mode + PZT 8-mode. Per-mode Q, per-mode chit. Kernel handles modal sums (`mpa_relaxation_packs/voice_coil.py:Actuator.modes` list).
-- **Q definition.** Q = ω₀/(2γ) is the canonical second-order quality factor. For viscoelastic damping: Q = 1/tan δ at resonance. Both consistent: Q = 0.5 is critical damping (s-boundary).
-- **chit ↔ Q axes.** Q is structural (recovery profile). chit is operating-point order parameter (lives at 0 at SOC attractor). Different axes; F-001 is a chit-axis bound, F-003 is a Q-axis regime classifier.
-- **Mode-separation precondition for F-001.** Each substrate must declare drive_mode and useful_work_mode. If they share a channel (pure-dissipative substrates), F-001 chit_max bound is vacuous; F-003 still applies.
-- **Open-loop vs closed-loop.** PyHDDBenchmark exposes both. Open-loop: substrate plant alone. Closed-loop: plant + controller. F-002 partial restoration at the closed-loop level; full restoration requires substrate-conditional design pressure (engines have it; HDDs don't because design tradeoff is two-sided).
-- **Phase units in FRF data.** PyHDDBenchmark Fre_Resp.json phases are in **radians**, not degrees. Future FRF ingests: check units before computing complex transfer functions.
-- **F-003 SNR floor.** ~30 dB for 2σ-rule detection of the algebraic signature in noisy data. Future F-003 tests on real-substrate data must report measurement SNR.
+- **Multimodal substrates.** PyHDDBenchmark VCM is 16-mode + PZT 8-mode. Per-mode Q, per-mode chit. Kernel handles modal sums.
+- **Q definition.** Q = ω₀/(2γ) is canonical second-order quality factor. For viscoelastic damping: Q = 1/tan δ. Critical damping at Q = 0.5.
+- **chit ↔ Q axes.** Q is structural (recovery profile). chit is operating-point order parameter. Different axes; F-001 is chit-axis bound, F-003 is Q-axis (or drive-level-axis) regime classifier.
+- **Mode-separation precondition for F-001.** Driver profile declares drive_mode and useful_work_mode. If they share a channel (pure-dissipative), F-001 vacuous.
+- **Open-loop vs closed-loop.** PyHDDBenchmark exposes both. F-002 partial restoration at closed-loop level.
+- **Phase units in FRF data.** PyHDDBenchmark Fre_Resp.json phases are in **radians**, not degrees. Future FRF ingests: check units.
+- **F-003 SNR floor.** ~30 dB for 2σ-rule detection of algebraic signature in noisy data (M-001).
+- **Drive-axis-vs-damping-axis distinction.** cdv1 c→s→r holds on both, but the *observable* differs. Damping-axis: Q at structural resonance. Drive-axis: drive level relative to threshold V_th, with s-region smeared by n·kT/q (NOT kT/q — ideality factor n matters).
+- **Pre-registration discipline.** PR-series in FOOTING is parallel to F-series. PR entries lock in protocols before runs. PR-001 commits drive-axis F-003 predictions and falsifier; future-Claude cannot move the goalpost.
+- **LED η_wpe in datasheets.** Commonly conflated with luminous efficacy. Real white-LED η_wpe at peak is typically 0.40–0.55 for premium 2026 parts; numbers >0.55 in datasheets typically reflect luminous-efficacy not divided by LER.
+- **LED substrate-class is internally heterogeneous in F-001.** Chemistry sets η_wpe more than power class does. v0.2 RFC-S refinement could add a chemistry-subclass field below substrate-class.
 
 ## Coordinates
 
