@@ -84,6 +84,23 @@ Substrate backlog in [SOURCES.md §7](../data/sources/SOURCES.md):
 - **§7.3 RC circuits** — first-order endpoint of substrate-two; r-regime limit reading.
 - **Lasers** — both drive-axis (pump threshold) AND damping-axis (cavity Q). Tests whether cdv1 universality holds across simultaneous axis-stacking. Original substrate cdv1 was derived from; recovery, not reach.
 
+### Phase H — cross-substrate batch driver (infrastructure, deferred until batching matures)
+
+**Activation trigger:** right after Phase G lands (6 calibration records). At that volume, hand-maintaining the substrate-class fingerprint table in the handoff + FOOTING starts to drift from the source data. Driver script closes the manual-bookkeeping loop.
+
+**Scope.** Single driver script `experiments/cross_substrate_audit.py` that:
+
+1. Loads all `data/*.json` substrate files (engines via mpa-engine pointer; voice coil actuators MDPI 2020 + PyHDDBenchmark; RLC analytical; viscoelastic damping materials; LEDs).
+2. Reads each driver profile's `substrate_class_type`, `f_001_applicability`, `f_003_applicability`, and `regime_classifier_axis` fields.
+3. For each substrate with f_001_applicability=yes: computes chit_max bound from declared η.
+4. For each substrate with f_003_applicability confirmed: emits regime classification or ratio_minimum signature.
+5. Emits the substrate-class fingerprint table to `docs/results/cross_substrate_fingerprint.json` and a markdown render to `docs/journey/cross_substrate_fingerprint.md`.
+6. Sanity-checks: do the FOOTING-recorded chit_max values match the freshly-computed ones from source data? If drift detected, surface as `M-00X` methodological finding (FOOTING-vs-source-data divergence).
+
+**Why deferred.** Premature now (N=6 substrate-classes hand-maintained without drift). Becomes worthwhile when (a) Phase G adds 6 calibration records → 12 artifact pairs to keep in sync, or (b) a 7th substrate-class lands and the manual fingerprint table can't be updated in a single pass.
+
+**Cost estimate.** ~half session. Loads + arithmetic; the kernel modules already provide the per-substrate computations. The script is glue, not new math.
+
 ## Gotchas surfaced (carry forward)
 
 - **Multimodal substrates.** PyHDDBenchmark VCM is 16-mode + PZT 8-mode. Per-mode Q, per-mode chit. Kernel handles modal sums.
