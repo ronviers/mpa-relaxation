@@ -12,7 +12,12 @@ Three outside-model research runs against the actuator-targeted prompt landed 20
 - [Canonical actuator candidates.md](Canonical%20actuator%20candidates.md)
 - [Linear Voice Coil Actuator Data Search.md](Linear%20Voice%20Coil%20Actuator%20Data%20Search.md) — cleaned in-place, ~42 KB of unreadable PNG-rendered formulas stripped
 
-**Top-ranked candidate (verified):** [Effect of Electromagnetic Damping on System Performance of Voice-Coil Actuator Applied to Balancing-Type Scale](https://www.mdpi.com/2076-0825/9/1/8) (MDPI Actuators 2020, 9(1):8). Bare cantilever + bobbin + magnet VCA. Full electromagnetic and mechanical parameters in Table 2. Step responses in Figures 12–13. Two configured instances (Al bobbin, plastic bobbin) demonstrating eddy-current damping tuning. Caveat: both Q values land in r-regime; Phase C supplementation needed for c→s→r walk.
+**Substrate-zero stack (both verified 2026-05-12):**
+
+1. **[MDPI Actuators 2020, 9(1):8](https://www.mdpi.com/2076-0825/9/1/8)** — *Effect of Electromagnetic Damping on System Performance of Voice-Coil Actuator Applied to Balancing-Type Scale*. Bare cantilever + bobbin + magnet VCA. Full EM/mechanical parameters in Table 2. Step responses in Figures 12–13. Two configured instances (Al / plastic bobbin) — **Q ≈ 0.033 and 0.39, both r-regime**.
+2. **[PyHDDBenchmark](https://github.com/macs-lab/PyHDDBenchmark)** (open-source Python port of IEEJ HDD positioning benchmark by Atsumi & Yabui 2020). Real HDD plant measurement data: **16 VCM modes** with **Q ∈ [12.5, 71], all c-regime**, plus 8 PZT modes. `plant.py` has modal parameters; `Fre_Resp.json` is the frequency-response data; `Data_RRO.txt` is time-domain RRO (Repeatable Run-Out) disturbance.
+
+Together: ~26 (Q, ω) data points spanning r-regime and c-regime in the voice-coil-actuator substrate-class. F-002 contrast finding: HDD VCMs are deliberately engineered for c-regime (sharp resonances + external controller), NOT chit ≈ 0 — substrate-class fingerprint divergence vs engines/loudspeakers.
 
 **Empirical update to §1.1 below:** systematic open-data scan returned essentially null for bare-VCA step-response time-series. The archives listed below remain authoritative entry points, but the *expected* presence of machine-readable datasets was optimistic. Bias toward paper PDFs with embedded figures rather than supplementary `.csv` / `.mat` files.
 
@@ -64,3 +69,31 @@ A loudspeaker is a voice coil actuator (substrate zero) with a cone + cavity bol
 ## §6 Adjacent literature (cross-substrate framing)
 
 - The engine-transient research dump from mpa-engine ([Engine Transient Data Research Sources](https://github.com/ronviers/mpa-engine/blob/main/data/sources/Engine%20Transient%20Data%20Research%20Sources.md)) frames IC engines as canonical multi-timescale dissipators where the natural physical decay tail is slower-than-exponential, partly erased by ECU dashpot algorithms. That framing motivates the substrate-pivot to bare voice coil actuators: no engineered exponential overlay, natural physical c→s→r structure shows up clean.
+
+## §7 Substrate backlog
+
+Substrate candidates flagged for later, not pulled into the current roadmap. Each one earns activation when a specific finding wants it or when a previously-planned substrate stalls.
+
+### §7.1 Stepper motors
+
+Stepper motors are voice coil actuators in a *configuration with discrete equilibria* — periodic-impulse-driven multi-stable substrate. The inter-step settling oscillation is a damped second-order response we'd want to read. Q of bounce/ring around each step is well-characterized in motor literature (every datasheet specifies "step settling time"). Substrate complexity higher than substrate-zero because of the multi-stable structure — adds an analytical layer that bare voice coil actuators don't have. Strong candidate for stress-testing the framework against more complex configurations. Data abundance: high (every stepper datasheet, lots of academic motor-control literature).
+
+### §7.2 Mechanical switches / debounce
+
+Switch contact bounce is a damped oscillation of the contact mass-spring system. Every digital input on every circuit board ever made has this exact tuning problem; debounce filters (RC, software, or Schmitt-trigger) are downstream band-aids for underdamped mechanical switches. Q values typically 1–20 for snap-action switches. Both r-regime (heavy contact, oil-filled, gold-plated) and c-regime (cheap dome-switch, membrane) substrates exist commercially.
+
+Rhetorical appeal high: switch debounce is a universally-familiar engineering problem at microelectronics scale, paralleling the carb-tuning scenario at engine scale. The tunable parameter is contact design (mass, spring stiffness, dome shape). Data: every switch datasheet has bounce-time numbers; oscilloscope traces are ubiquitous in electronics textbooks and YouTube videos.
+
+Subtlety same as engines' return-to-idle: substrate's steady-state is "switch open" or "switch closed," not a sustained NESS at chit ≈ 0. The c→s→r read is on the bounce *recovery profile*, which is the F-003 test. Fits naturally.
+
+### §7.3 RC circuits (first-order, r-regime endpoint)
+
+RC is a *first-order* driven-dissipative system (single timescale τ = RC; only exponential relaxation, no oscillation). Unlike RLC, an RC circuit doesn't have a c-regime at all because there's no energy-storage-back mechanism — capacitor charges/discharges monotonically toward the source voltage.
+
+**Useful but not for the c→s→r walk.** Ron flagged "capacitors as forced relaxation" — sharp framing. A driven RC circuit is exactly cdv1's driven-dissipative setup with the oscillation pole stripped. chit reading is well-defined: G₀ = V_source²/R during charging, L = I²R, chit > 0 while charging, → 0 at equilibrium. RC sits at the *purely-overdamped extreme* of the substrate-class. Useful as a data point at the far r-regime end of the F-001 universality test; useless for the c→s→r walk because it only has one regime.
+
+Pairing note: substrate-two RLC (already in roadmap) reduces to RC in the limit L → 0. The substrate-zero / RLC / RC chain is a continuum of second-order-with-decreasing-storage substrates.
+
+### §7.4 TeachSpin Torsional Oscillator (pocket fallback)
+
+Pedagogical apparatus designed for demonstrating c→s→r damping regimes via tunable eddy-current damping. Rotary geometry, mathematically identical second-order oscillator. Held as the substrate to fall through to if the c→s→r walk via RLC feels too synthetic and we want real-apparatus data. [teachspin.com/torsional-oscillator](https://www.teachspin.com/torsional-oscillator).

@@ -49,12 +49,21 @@ Regime mapping:
 
 **Caveat:** both Q values land in r-regime (overdamped). Excellent for F-001-actuator and F-002-actuator (chit reading at steady state); insufficient for full F-003 c→s→r walk. Needs a supplement to reach c-regime.
 
-### Tier 2 — unverified, plausible downloadable datasets
+### Tier 2 — verified open-source benchmark (promoted 2026-05-12)
+
+| Candidate | Source | Verified | Provides |
+|---|---|---|---|
+| **IEEJ HDD positioning benchmark (PyHDDBenchmark)** | File C → verified via GitHub | ✓ open source ([macs-lab/PyHDDBenchmark](https://github.com/macs-lab/PyHDDBenchmark)), real HDD plant measurement data | Plant model derived from real HDD measurements (Atsumi & Yabui 2020 IEEE TIE 67(11):9184). **VCM: 16 modes**, ω ∈ [0, 44800] rad/s, ζ ∈ [0.007, 0.04] → **Q ∈ [12.5, 71], all c-regime**. **PZT: 8 modes**, Q ∈ [1.67, 62.5]. `Fre_Resp.json` frequency-response data + `Data_RRO.txt` time-series. Industry-standard, IEEJ-supported, IEEE-cited. |
+
+**The c-regime contrast finding:** MDPI 2020 cantilever VCA sits in r-regime (Q ≈ 0.033–0.39). PyHDDBenchmark HDD VCM sits deeply in c-regime (Q ≈ 12.5–71). Combined chit-envelope range across two substrate-zero instances spans the c/r boundary but skips the s-boundary. F-001-actuator gets ~26 data points across two physical substrates of the same class.
+
+**F-002 contrast finding worth recording in FOOTING:** HDD VCMs are *deliberately engineered for c-regime* — sharp resonance peaks closed externally by feedback control, NOT operated near chit ≈ 0. This contrasts engines (chit ≈ 0 by SOC self-tuning at idle) and loudspeakers (chit ≈ 0 by half-space radiation efficiency cap). **The SOC-attractor reading of F-002 is substrate-conditional**, not universal — some substrates live near chit ≈ 0 by construction; others live far and have external controllers close the gap. cdv1 §Active modulation handles the plant+controller decomposition.
+
+### Tier 2b — other unverified candidates from File C
 
 | Candidate | Source | URL | Why it might work |
 |---|---|---|---|
-| MathWorks/IEEJ HDD benchmark | File C | [fileexchange/111515](https://jp.mathworks.com/matlabcentral/fileexchange/111515-magnetic-headpositioning-control-system-in-hdds) | Dual-stage VCM + PZT magnetic head positioning, industry-standard benchmark from IEEJ Japan; likely has open-loop plant data |
-| Mendeley OPU force analyzer | File C | [10.17632/cnkd95kp65.1](https://doi.org/10.17632/cnkd95kp65.1) | HD-DVD VCM / OIS-scale, has Mendeley DOI suggesting downloadable dataset |
+| Mendeley OPU force analyzer | File C | [10.17632/cnkd95kp65.1](https://doi.org/10.17632/cnkd95kp65.1) | HD-DVD VCM / OIS-scale, Mendeley DOI suggests downloadable |
 | Zenodo haptic texture VCA | File C | [10.5281/zenodo.4813359](https://doi.org/10.5281/zenodo.4813359) | Haptic linear VCA, Zenodo DOI suggests downloadable |
 | MDPI Actuators 2023, 12(3):132 | File C | [mdpi.com/2076-0825/12/3/132](https://www.mdpi.com/2076-0825/12/3/132) | Macro-Micro VCM dual-stage positioner, open access |
 
@@ -84,16 +93,13 @@ The TeachSpin is rotary geometry but a linear (mathematical) second-order damped
 
 Files A and B independently confirm: **systematic scan of Zenodo, Mendeley Data, IEEE DataPort, MDPI Actuators supplementary files, DSpace@MIT, ePrints Soton returns essentially no machine-readable time-series step-response datasets for bare linear voice coil actuators.** File C found 4 entries on the same archives — to be verified individually before relying on them. Three-model consensus says the open-data assumption from the SOURCES.md §1 list was optimistic.
 
-## Recommendation for Phase A
+## Recommendation for Phase A (updated 2026-05-12 after PyHDDBenchmark verification)
 
-1. **Canonical actuator: MDPI Actuators 2020, 9(1):8.** Run F-001-actuator and F-002-actuator end-to-end against this paper. Two Q points means we get two data points on the chit envelope. Substrate-zero v0.1 driver profile populates with concrete amplitudes.
-2. **Phase C supplementation in priority order:**
-   a. Verify MathWorks/IEEJ HDD benchmark — if open-loop step-response across firmware tunings is downloadable, F-003-actuator lands here.
-   b. If (a) fails, fall through to TeachSpin torsional oscillator as the c→s→r testbed. Reframe substrate-zero scope: from "linear voice coil actuator" to "single-mode second-order driven-dissipative oscillator," with the torsion pendulum and linear VCA as two instances of the same substrate-class.
-3. **Tier 3 (Southampton inertial)** held as backup if Tier 1 stalls on the r-only constraint.
+1. **Stack two substrate-zero instances: MDPI 2020 + PyHDDBenchmark.** Complementary regimes (r vs c), same substrate-class (linear voice coil actuator). F-001-actuator gets ~26 data points across two physical substrates. F-002-contrast finding lands directly in FOOTING.
+2. **F-003 c→s→r walk: pull RLC (substrate-two) forward into Phase A.** PyHDDBenchmark is a fixed plant (not tunable); MDPI 2020 only spans r-regime. The c→s→r walk wants a substrate where Q is *continuously tunable*, and RLC delivers this trivially — vary R, walk c→s→r. Ron-confirmed mature; closed-form damped sinusoidal step response per textbook. Substrate-two was queued for "null check" anyway; pulling forward to handle F-003 doubles its work.
+3. **Tier 3 (Southampton inertial) and TeachSpin torsional oscillator** held as backup substrates if either path stalls.
 
 ## What this assessment does NOT do
 
-- Select a canonical actuator (user decision). This document presents the ranked options.
-- Verify Tier 2 candidates beyond URL plausibility. Each one needs a fetch + parameter-presence check before commitment.
-- Resolve the "Q values in MDPI 2020 are both r-regime" gap. Decision deferred to user: accept r-only and supplement, or replace with a candidate (Southampton family, or another) that reaches c-regime.
+- Verify Tier 2b candidates beyond URL plausibility (Mendeley OPU, Zenodo haptic, MDPI 2023). Held as backup.
+- Cover substrate-class extensions ron flagged for backlog (stepper motors, mechanical switches / debounce, RC circuits). See [SOURCES.md §7 Substrate backlog](SOURCES.md).
