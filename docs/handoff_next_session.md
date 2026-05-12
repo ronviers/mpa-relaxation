@@ -1,45 +1,51 @@
 # Handoff — next session
 
-## Current state (2026-05-11, v0 scaffold)
+## Current state (2026-05-12, substrate-zero pivot to voice coil actuators)
 
-Repo stood up with sibling treatment (README, CLAUDE.md, .gitignore, package skeleton, RFC-S / RFC-C coordinates pointed at mpa-atlas). No data, no experiments, no findings yet. Substrate zero (loudspeakers) queued; substrate one (engines) cited from [mpa-engine](https://github.com/ronviers/mpa-engine).
+Substrate-zero pivoted from loudspeakers to **voice coil linear actuators** on 2026-05-12. Reasoning: a loudspeaker is a voice coil actuator with a cone + cavity bolted on — the cavity was never the substrate, it was the load configuration. Stripping the cone and cavity gives the bare driven-dissipative oscillator. Wins: cleaner physics (no acoustic radiation impedance, no room), knob-tunable Q (load mass + damping coefficient, not a different enclosure per tuning), wider chit envelope (~0.1–0.5 vs ~0.02), industrial-precision open-data archives (Zenodo, Mendeley, IEEE DataPort, MDPI Actuators, DSpace@MIT, ePrints Soton), and c→s→r tuning as standard engineering practice (HDD seek, OIS, lithography stages, haptic LRAs).
 
-## Why this repo exists
+Three outside research models running data hunt (2026-05-12) using the actuator-targeted prompt. Phase A starts when results land.
 
-cdv1's c→s→r damping structure should appear in any tunable driven-dissipative system. mpa-engine validated F-001 (chit_max ≈ -ln(1 - η_thermal,max)) on IC engines. Natural next step: test whether the *same chit definition* and *same regime structure* hold on a second, much more accessible substrate. Loudspeakers chosen first because the damping parameter (Q_ts) is one number, the loss decomposition (Q_es electrical / Q_ms mechanical / radiation) is in every datasheet, and free measurement data is abundant. The cross-substrate comparison is the load-bearing finding.
+Loudspeakers shelved with explicit commitment to return — same substrate-class, stronger rhetorical fit (audiophile c→s→r vocabulary, carb-tuning everyman analogy). Will be characterized as a *configured instance* of substrate-zero once the bare-actuator substrate lands. Prior loudspeaker research lives at [data/sources/shelved-loudspeaker-research.md](../data/sources/shelved-loudspeaker-research.md).
 
 ## What's queued
 
-### Phase A: loudspeaker substrate-zero end-to-end
+### Phase A: voice coil actuator substrate-zero end-to-end
 
-1. **Write the loudspeaker driver profile.** `reference-driver/loudspeaker.md`, shaped per RFC-S §4. Substrate-class declaration, gamut, translation field (Q_ts → chit, CSD → recovery profile), intents, reference outputs.
-2. **Pick a canonical loudspeaker.** Candidates: well-measured studio monitors (Genelec 8030, Neumann KH80) or classic sealed-box references (KEF LS50, original Wharfedale Diamond). Selection criterion: published Thiele/Small parameters **plus** published CSD measurement from a reputable source (ASR, Stereophile, Klippel public data, AudioXpress).
-3. **Extract substrate data to JSON.** `data/<speaker-id>.json`: Thiele/Small parameters (Q_ts, Q_es, Q_ms, Fs, Vas, Re, BL, Mms), CSD waterfall (frequency × time × dB), impulse response if available.
-4. **Implement `mpa_relaxation_packs.loudspeaker`.** Loader + chit reading: G₀ = electrical power into voice coil, L = sum of decomposed losses, chit = ln(G₀ / L). Regime classification from Q_ts.
-5. **Calibration record.** `reference-driver/<speaker-id>-calibration.json` per RFC-C §2.
-6. **Smoke experiment.** `experiments/chit_<speaker-id>.py` computes chit at the fundamental resonance, classifies regime from Q_ts, fits the CSD decay tail (exponential vs. algebraic).
-7. **F-001-loudspeaker.** Predicted: chit_max ≈ -ln(1 - η_acoustic), giving chit_max ~0.01–0.03 for typical loudspeakers. Test against observed chit at the system's resonance peak. Same form as F-001-engine; much narrower envelope.
+1. **Driver profile already drafted.** [reference-driver/voice-coil-actuator.md](../reference-driver/voice-coil-actuator.md) v0.1 — substrate-class declaration, gamut, translation field, intents, reference outputs. Updates when first calibration record lands.
+2. **Ingest research output from three outside models.** Cross-reference for overlap on (a) canonical actuator candidates, (b) tunable test rig pointers, (c) open-data archive datasets with download URLs. Overlap is the signal; divergence is hallucination filter.
+3. **Pick a canonical actuator.** Selection criterion: published electromagnetic parameters (BL, R, L, M, K) **plus** time-series step-response data with settling behaviour. Bias toward (in order): a published HDD VCM characterization → inertial actuator from academic paper (e.g., Dal Borgo 2019 candidate) → MDPI Actuators supplementary dataset → IEEE DataPort entry → haptic LRA datasheet. Selection writes to FOOTING discussion.
+4. **Extract substrate data to JSON.** `data/<actuator-id>.json`: electromagnetic parameters, suspension parameters, load configuration, step-response time-series (current command → position trace), frequency response if available.
+5. **Implement `mpa_relaxation_packs.voice_coil`.** Loader + chit reading: G₀ = V·I or I²·R + BL·v·I, L = sum of decomposed losses, chit = ln(G₀ / L). Regime classification from Q (γ = ω₀/(2Q), ω_d = ω₀·√(1 - 1/(4Q²)) — c-regime if Q > 0.5, s at Q = 0.5, r if Q < 0.5).
+6. **Calibration record.** `reference-driver/<actuator-id>-calibration.json` per RFC-C §2.
+7. **Smoke experiment.** `experiments/chit_<actuator-id>.py` computes chit at the resonance, classifies regime from Q, fits the step-response settling profile (exponential vs algebraic).
+8. **F-001-actuator.** Predicted: chit_max in 0.1–0.5 range, depending on load. Test against observed chit at sustained operating point. Same form as F-001-engine.
 
 ### Phase B: cross-substrate F-001 fingerprint
 
-8. **F-cross-001.** Stack F-001-engine (Camry, chit_max ≈ 0.41) and F-001-loudspeaker (chit_max ≈ 0.02) on the same axis: chit_max bounded by -ln(1 - η) as a substrate-class universality. Two data points is the minimum; an RLC circuit as substrate-two would make it three.
+9. **F-cross-001.** Stack F-001-engine (chit_max ≈ 0.41), F-001-actuator (chit_max ~0.1–0.5, instance-dependent) on the same universality axis: chit_max bounded by -ln(1 - η) where η is the substrate's drive-to-useful-output efficiency. Two substrate-classes is the minimum; RLC adds a third when it lands.
 
-### Phase C: c→s→r recovery-tail test (the original F-003 goal, finally landable)
+### Phase C: c→s→r recovery-tail test (the original F-003 goal)
 
-9. **Pick a tunable speaker.** Vented-box or sealed-box where port-tuning + damping material let us walk Q_ts across the c → s → r range. DIY/audiophile community publishes thousands of such tunings.
-10. **Per-tuning CSD measurements.** For each Q_ts value, CSD tail shape tests exponential vs. algebraic decay.
-11. **F-003-loudspeaker.** Recovery profile is algebraic at Q_ts ≈ 0.707 (chit ≈ 0); exponential elsewhere. cdv1 §Stability prediction. The carb-tuning scenario realized in a substrate where data is free and the tunable parameter is one number.
+10. **Pick a tunable actuator testbed.** Either (a) an academic test rig where load mass / damping is documented to walk Q across c→s→r (Dal Borgo 2019 candidate per the actuator research prompt), or (b) a published HDD seek profile dataset that exposes per-Q step responses across firmware tunings.
+11. **Per-Q step-response measurements.** For each Q value, settling profile tests exponential vs. algebraic decay.
+12. **F-003-actuator.** Recovery profile is algebraic at Q ≈ 0.5 (chit ≈ 0); exponential elsewhere. cdv1 §Stability prediction. The carb-tuning scenario realized in a substrate where data is free, the tunable parameter is one number, and the engineering practice already routinely walks the regimes.
 
-### Phase D: substrate-two
+### Phase D: substrate-two (RLC) and substrate-three (materials)
 
-12. **RLC circuit** is the cleanest substrate-two candidate: tunable R, free SPICE-simulatable or breadboard-measurable, three regimes mappable one-to-one via standard textbook formulae. Validates that the cross-substrate test isn't a two-substrate fluke.
+13. **RLC circuit substrate-two.** Textbook formulae, SPICE-simulatable. Loader takes (R, L, C); chit = ln(input_power / total_dissipation); Q = (1/R)·√(L/C). Step response is the closed-form damped sinusoid. Null check that the cross-substrate test isn't a two-substrate fluke and that the chit-from-Q implementation is correct.
+14. **Viscoelastic damping materials substrate-three.** MatWeb / vendor datasheets (3M VHB, Roush, SoundCoat). Loss factor η_loss → Q = 1/η_loss → regime classification. Real-world heterogeneity across hundreds of materials = stress test for the universality claim.
 
-## Gotchas to surface as work proceeds
+### Phase E: return to loudspeakers
 
-- CSD measurements have **windowing artefacts** at short times. Fitting the decay tail must start past the windowing region.
-- Loudspeaker measurements are commonly **gated to remove room reflections**. Gate length sets the lower frequency limit of the CSD. For low-frequency-resonance speakers, this caps how cleanly we can read the dominant mode.
-- Q_ts is **frequency-domain**, chit is **thermodynamic**. The mapping is monotonic but not identity. Establishing the precise relationship (probably chit ≈ ln(2Q) at resonance, or similar) is a Phase A sub-task worth writing down.
-- Manufacturer-published Thiele/Small is often **small-signal**. Real chit at audible playback level may drift via Klippel-type nonlinearities. Substrate-state matters; the calibration record should declare drive level.
+15. **Unshelve loudspeakers.** Read as a *configured instance* of substrate-zero (voice coil actuator + cone + cavity load). Prior research at [data/sources/shelved-loudspeaker-research.md](../data/sources/shelved-loudspeaker-research.md). Adds the audiophile vocabulary back into the rhetorical surface for external publication.
+
+## Gotchas surfaced
+
+- **Q definition matters.** Thiele/Small Q_ts (loudspeaker) and actuator-control Q (settling-time literature) both use the canonical second-order Q = ω₀/(2γ), but: small-signal vs large-signal Q can drift (Klippel-type nonlinearity), and "system Q" with load differs from "driver Q" in free air. Calibration record must declare drive level and load configuration.
+- **chit ↔ Q is not an identity.** Q is structural (controls recovery profile after perturbation). chit is the order parameter (varies across operating points, lives at 0 by SOC self-tuning at steady-state NESS). They sit on different axes. Q determines the c→s→r regime; chit determines whether a sustained NESS exists at all.
+- **Open-loop vs closed-loop data.** Industrial servo data is often buried under closed-loop control — only the *commanded* response is exposed, not the open-loop substrate. Calibration record must specify open-loop test, or explicitly decompose controller from plant per cdv1 §Active modulation.
+- **Settling-time conventions differ.** "2% settling time" vs "5% settling time" vs "first zero-crossing time" — actuator literature uses several. The chit-fit takes the raw time-series, but cross-comparison against literature Q values must align conventions.
 
 ## Coordinates
 
