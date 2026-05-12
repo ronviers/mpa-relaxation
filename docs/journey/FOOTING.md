@@ -215,3 +215,54 @@ F-003 (regime structure from Q: c above Q = 0.5, s at Q = 0.5, r below) is the m
 **The substrate-class fingerprints differ in *what kind of engineering* lands them at chit ≈ 0**, not whether they get there. The framework holds across all five substrate-classes characterized to date — F-003 universally, F-001 conditionally on mode-separation.
 
 **Status.** F-003-viscoelastic confirmed (regime structure passes substrate-class heterogeneity stress test). F-003 cross-substrate evidence now spans engines (cited), actuators (open + closed-loop), RLC (analytical), and viscoelastic materials. The seven-register cdv1 chain — drive amplitude G₀, loss L, chit, regime c/s/r, with substrate-conditional amplitudes — operates correctly across all five substrate-classes when F-001 scope-conditioning is applied.
+
+## F-001-led · widest chit_max envelope of any substrate-class · 2026-05-12
+
+**Claim.** cdv1 F-001 (chit_max ≈ -ln(1 - η_max)) applies to LEDs as a mode-separated drive-axis substrate. η_wpe (wall-plug efficiency = optical power radiated / electrical power consumed) is the substrate's η_conversion. The substrate-class spans the **widest chit_max envelope characterized to date** — 0.084 (UV LED, lowest of any substrate) to 0.693 (Samsung LM301B premium white, just below the actuator coupling-limited 0.752).
+
+**Evidence.** [experiments/f001_led.py](../../experiments/f001_led.py), [docs/results/f001_led.json](../results/f001_led.json), [data/leds.json](../../data/leds.json). 13 LEDs cross-referenced from three outside-model research runs (2026-05-12). Spans 6 chemistries (UV, blue, red, deep red, yellow-green, white), 6 power classes (indicator through industrial high-power), and 6 regions (Western USA, Western German, Japanese, Chinese, Korean, Taiwan).
+
+| ID | Chemistry | V_th (V) | η_wpe | chit_max bound |
+|---|---|---|---|---|
+| Toyoda Gosei UV | UV | 3.00 | 0.080 | 0.084 |
+| Stanley VFJD1116P | yellow-green | 1.70 | 0.150 | 0.163 |
+| Everlight SHWO deep red | deep_red | 1.75 | 0.250 | 0.288 |
+| Honglitronic C5050 | white | 3.00 | 0.300 | 0.357 |
+| Cree XP-G3 royal blue | blue | 2.82 | 0.350 | 0.431 |
+| Cree XP-G3 photo red | red | 1.87 | 0.350 | 0.431 |
+| Osram OSLON SSL 80 | white | 2.80 | 0.350 | 0.431 |
+| LG Innotek LEMWS59R | white | 2.70 | 0.350 | 0.431 |
+| Epistar 10W (multi-junction) | white | 9.60 | 0.350 | 0.431 |
+| Nichia NVSW219C-V2 | white | 2.50 | 0.420 | 0.545 |
+| Cree XP-G3 white | white | 2.70 | 0.460 | 0.616 |
+| Seoul Semi WICOP | white | 2.68 | 0.470 | 0.635 |
+| **Samsung LM301B** | **white** | **2.50** | **0.500** | **0.693** |
+
+**Substrate-class internal heterogeneity finding.** Chemistry dictates F-001 chit_max more than power class does. Compare same-power-class entries: a UV LED at 350 mA (chit_max 0.08) lives in a different chit envelope than a Cree photo red at 700 mA (chit_max 0.43) lives in a different envelope than a Samsung LM301B at 65 mA (chit_max 0.69). The substrate-class fingerprint is **multi-modal**, not single-peaked. AlGaInP red ≠ InGaN blue/white ≠ AlGaN UV in their underlying η_wpe physics, despite all being LEDs.
+
+**Cross-substrate position:**
+
+| Substrate-class | chit_max range or value | Lowest | Highest |
+|---|---|---|---|
+| Loudspeakers (shelved) | 0.003–0.014 | 0.003 | 0.014 |
+| LEDs (this finding) | **0.084–0.693** | **UV (Toyoda Gosei)** | **Samsung LM301B white** |
+| Engines (Camry F-001 observed) | 0.41 | — | — |
+| Viscoelastic damping (median Q = 0.75 → chit not the right axis) | n/a | n/a | n/a |
+| Voice coil actuator open-loop (Q = 12-71, deep c-regime) | n/a (operates far from F-001 bound) | n/a | n/a |
+| Voice coil actuator MDPI plastic bobbin | 0.752 (bound) | — | — |
+
+**The LED substrate-class spans almost as much chit_max range as the entire cross-substrate menagerie does.** This is the substrate-class with the highest internal F-001 variance — UV at 0.08 sits in loudspeaker territory; premium white at 0.69 sits in actuator-coupling-limited territory. The substrate-class boundary is loose along the F-001 axis; cdv1's substrate-conditional content is more strongly tied to *chemistry* than to *substrate-class label*.
+
+**Framework implication.** This refines the substrate-conditional/substrate-neutral split: the F-001 amplitude is *not even consistent within a substrate-class* — it's set by the sub-class chemistry. A driver-profile v0.2 RFC-S refinement would benefit from declaring an explicit "chemistry sub-class" or "physical conversion mechanism" field below substrate-class, capturing the η_wpe-determining physics.
+
+## Drive-axis F-003 hypothesis · ABC recombination droop curvature · 2026-05-12
+
+**Status: OPEN.** Two complementary phenomena surfaced from the LED research that may be the drive-axis F-003 signature analogous to RLC's algebraic-exp factor at Q = 0.5:
+
+**Hypothesis 1: V_th threshold smearing.** Static I-V curve transition zone is ~kT/q wide (≈ 26 mV at room temp). The c/s/r boundaries are smeared by thermal noise. This is the substrate-conditional read of cdv1's c→s→r structure on drive-axis substrates: r below V_th − kT/q, smeared s-region V_th ± kT/q, c above V_th + kT/q. Captured in [reference-driver/led.md](../../reference-driver/led.md) §1.
+
+**Hypothesis 2: ABC-recombination efficiency droop peak.** R = A·n + B·n² + C·n³ where A is SRH non-radiative, B is radiative, C is Auger non-radiative. η_wpe peaks at intermediate carrier density where B·n² dominates A·n on the low side and C·n³ on the high side. **The peak position and curvature may be the drive-axis F-003 signature** — analogous to RLC's algebraic-exp factor at Q = 0.5 being the damping-axis signature. The droop curve has a *qualitatively distinct* shape at the peak vs. away from it (curvature reverses sign), matching cdv1's prediction that the s-region is qualitatively distinct from c and r.
+
+**Test path (next turn).** [University of Bath ABC-recombination dataset](https://researchdata.bath.ac.uk) (Excel, multiple commercial InGaN LEDs, 0–500 mA L-I + I-V) is the most direct data source for hypothesis 2. [NBSDC China LED Optoelectronic Characteristics](https://www.nbsdc.cn) (4.42 MB downloadable) is the secondary candidate. If the droop-curvature signature lands cleanly at the η_wpe peak across multiple LEDs, the substrate-conditional drive-axis F-003 method is settled.
+
+**Predicted result.** Per cdv1 §Stability's reasoning that the s-region carries an algebraic factor (analogous to RLC's (1 + α·t)·e^(-α·t)), the drive-axis analogue is plausibly: at the η_wpe peak, η_wpe(I) has a polynomial-vs-exponential signature distinguishing it from off-peak operation. The B·n²/(A·n + B·n² + C·n³) function has well-known critical-curvature behavior at its maximum that may map onto cdv1's algebraic-factor prediction. Confirming this would extend cdv1's universality from damping-axis to drive-axis substrates.

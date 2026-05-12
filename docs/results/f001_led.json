@@ -1,0 +1,202 @@
+{
+  "experiment": "f001_led",
+  "run_at": "2026-05-12T14:32:43.998141+00:00",
+  "phase_f_step": "1.2",
+  "claim_under_test": "F-001 applies to LEDs as a mode-separated drive-axis substrate. chit_max \u2264 -ln(1 - \u03b7_wpe) where \u03b7_wpe is wall-plug efficiency.",
+  "n_leds": 13,
+  "instances": [
+    {
+      "id": "cree_xp_g3_white",
+      "vendor": "Cree",
+      "model": "XLamp XP-G3 White",
+      "chemistry": "white",
+      "power_class": "industrial_high_power",
+      "V_th_V": 2.7,
+      "eta_wpe": 0.46,
+      "chit_max_bound": 0.616186139423817
+    },
+    {
+      "id": "cree_xp_g3_royal_blue",
+      "vendor": "Cree",
+      "model": "XLamp XP-G3 Royal Blue",
+      "chemistry": "blue",
+      "power_class": "industrial_high_power",
+      "V_th_V": 2.82,
+      "eta_wpe": 0.35,
+      "chit_max_bound": 0.4307829160924542
+    },
+    {
+      "id": "cree_xp_g3_photo_red",
+      "vendor": "Cree",
+      "model": "XLamp XP-G3 Photo Red",
+      "chemistry": "red",
+      "power_class": "industrial_high_power",
+      "V_th_V": 1.87,
+      "eta_wpe": 0.35,
+      "chit_max_bound": 0.4307829160924542
+    },
+    {
+      "id": "osram_oslon_ssl_80",
+      "vendor": "Osram",
+      "model": "OSLON SSL 80 GW CS8PM1.PM",
+      "chemistry": "white",
+      "power_class": "automotive",
+      "V_th_V": 2.8,
+      "eta_wpe": 0.35,
+      "chit_max_bound": 0.4307829160924542
+    },
+    {
+      "id": "nichia_nvsw219c_v2",
+      "vendor": "Nichia",
+      "model": "NVSW219C-V2",
+      "chemistry": "white",
+      "power_class": "smartphone",
+      "V_th_V": 2.5,
+      "eta_wpe": 0.42,
+      "chit_max_bound": 0.5447271754416719
+    },
+    {
+      "id": "stanley_vfjd1116p",
+      "vendor": "Stanley",
+      "model": "VFJD1116P-4C62B-TR",
+      "chemistry": "yellow_green",
+      "power_class": "indicator",
+      "V_th_V": 1.7,
+      "eta_wpe": 0.15,
+      "chit_max_bound": 0.16251892949777494
+    },
+    {
+      "id": "toyoda_gosei_uv",
+      "vendor": "Toyoda Gosei",
+      "model": "UV-LED 365 nm",
+      "chemistry": "UV",
+      "power_class": "industrial",
+      "V_th_V": 3.0,
+      "eta_wpe": 0.08,
+      "chit_max_bound": 0.08338160893905101
+    },
+    {
+      "id": "honglitronic_c5050",
+      "vendor": "Honglitronic",
+      "model": "C5050 (5050 SMD white)",
+      "chemistry": "white",
+      "power_class": "industrial_high_power",
+      "V_th_V": 3.0,
+      "eta_wpe": 0.3,
+      "chit_max_bound": 0.35667494393873245
+    },
+    {
+      "id": "samsung_lm301b",
+      "vendor": "Samsung",
+      "model": "LM301B (CRI80 5000K)",
+      "chemistry": "white",
+      "power_class": "smartphone",
+      "V_th_V": 2.5,
+      "eta_wpe": 0.5,
+      "chit_max_bound": 0.6931471805599453
+    },
+    {
+      "id": "lg_innotek_lemws59r",
+      "vendor": "LG Innotek",
+      "model": "LEMWS59R-B Series",
+      "chemistry": "white",
+      "power_class": "bulb",
+      "V_th_V": 2.7,
+      "eta_wpe": 0.35,
+      "chit_max_bound": 0.4307829160924542
+    },
+    {
+      "id": "seoul_semi_wicop",
+      "vendor": "Seoul Semiconductor",
+      "model": "WICOP STW8C12B-E0",
+      "chemistry": "white",
+      "power_class": "automotive",
+      "V_th_V": 2.68,
+      "eta_wpe": 0.47,
+      "chit_max_bound": 0.6348782724359695
+    },
+    {
+      "id": "epistar_10w_hp",
+      "vendor": "Epistar",
+      "model": "10W High Power (multi-junction)",
+      "chemistry": "white",
+      "power_class": "industrial_high_power",
+      "V_th_V": 9.6,
+      "eta_wpe": 0.35,
+      "chit_max_bound": 0.4307829160924542
+    },
+    {
+      "id": "everlight_shwo_deep_red",
+      "vendor": "Everlight",
+      "model": "SHWO(N) Deep Red",
+      "chemistry": "deep_red",
+      "power_class": "industrial",
+      "V_th_V": 1.75,
+      "eta_wpe": 0.25,
+      "chit_max_bound": 0.2876820724517809
+    }
+  ],
+  "substrate_class_summary": {
+    "n_leds": 13,
+    "eta_wpe_range": [
+      0.08,
+      0.5
+    ],
+    "eta_wpe_median": 0.35,
+    "V_th_range_V": [
+      1.7,
+      9.6
+    ],
+    "chit_max_bound_range": [
+      0.08338160893905101,
+      0.6931471805599453
+    ],
+    "chit_max_bound_median": 0.4307829160924542,
+    "chemistries": [
+      "UV",
+      "blue",
+      "deep_red",
+      "red",
+      "white",
+      "yellow_green"
+    ],
+    "power_classes": [
+      "automotive",
+      "bulb",
+      "indicator",
+      "industrial",
+      "industrial_high_power",
+      "smartphone"
+    ]
+  },
+  "cross_substrate_position": {
+    "leds_chit_max_bound_range": [
+      0.08338160893905101,
+      0.6931471805599453
+    ],
+    "leds_chit_max_bound_median": 0.4307829160924542,
+    "vs_engine_Camry_observed": 0.41,
+    "vs_actuator_mdpi_plastic_bound": 0.752,
+    "vs_actuator_pyhddbenchmark_open_loop_Q_range": [
+      12.5,
+      71.4
+    ],
+    "vs_viscoelastic_Q_median": 0.75,
+    "vs_loudspeaker_chit_observed_range": [
+      0.003,
+      0.014
+    ],
+    "ordering_chit_max": "UV LED (0.084, low conversion efficiency) \u2248 loudspeaker (0.003-0.014, radiation cap) < indicator LEDs (0.16, low-end) < red/blue LEDs (0.43, moderate) \u2248 engine Camry (0.41, thermal cap) < white LEDs (0.50-0.69, premium efficiency) \u2248 VCA-plastic-bobbin (0.75, coupling-limited)",
+    "interpretation": "LEDs span the full chit_max envelope from UV (0.08, lowest of any substrate-class characterized) to premium white (0.69, near the actuator coupling limit). The substrate-class is internally heterogeneous in F-001 \u2014 chemistry dictates \u03b7_wpe more than power class does. AlGaInP red and InGaN blue/white share the substrate-class but live at very different chit_max bounds because of different internal quantum efficiencies."
+  },
+  "f_002_reading": {
+    "claim": "At sustained operation in c-regime (V_drive > V_th + kT/q), the LED is in NESS: average G\u2080 = electrical input power, average L = electrical input - radiated optical power - junction heat. By energy conservation at steady state, chit at the operating point is well-defined but not necessarily 0.",
+    "subtlety": "Unlike damping-axis substrates where chit \u2248 0 at the SOC attractor by power balance (G\u2080 = L_dissipation), drive-axis substrates have the additional 'useful work out' channel (\u03b7_wpe of input emerges as photons). chit at sustained operation = ln(G\u2080/L) where L excludes the photon-output term. This is the F-001 reading \u2014 chit_max is bounded by \u03b7_wpe."
+  },
+  "drive_axis_f_003_hypothesis": {
+    "status": "OPEN \u2014 hypothesis surfaced from cross-research, fit pending data",
+    "candidate_1": "Static I-V threshold smearing: V_th transition zone ~kT/q wide. Sub-threshold leakage (SRH) vs exponential turn-on. The s-region width on the drive-axis is set by thermal noise.",
+    "candidate_2": "Dynamic efficiency droop peak: ABC recombination model R = A\u00b7n + B\u00b7n\u00b2 + C\u00b7n\u00b3 where A = SRH non-radiative, B = radiative, C = Auger non-radiative. \u03b7_wpe peaks at intermediate carrier density where B\u00b7n\u00b2/(A\u00b7n + B\u00b7n\u00b2 + C\u00b7n\u00b3) is maximized. The peak position and curvature may be the substrate-conditional drive-axis signature, analogous to the algebraic-exp factor at Q = 0.5 on damping-axis substrates.",
+    "test_path": "University of Bath ABC-recombination dataset (Excel, multiple commercial InGaN LEDs, 0-500 mA L-I + I-V) is the most direct data source for testing hypothesis 2. NBSDC China LED Optoelectronic Characteristics dataset (4.42 MB) is the secondary candidate. Both pending verification in a future turn."
+  }
+}
