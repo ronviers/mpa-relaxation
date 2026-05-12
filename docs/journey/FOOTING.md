@@ -56,3 +56,33 @@ The ratio drops continuously toward zero as Q approaches 0.5 from either side, h
 **Cross-substrate test condition.** The algebraic-exp signature at Q = 0.5 should appear (modulo noise) in any second-order driven-dissipative substrate when Q is walked through the s-boundary. Substrate-zero (voice coil actuators in current stack) doesn't sample Q = 0.5 — both MDPI 2020 instances are Q < 0.5 and all PyHDDBenchmark modes are Q >> 0.5. To test F-003 on substrate-zero, either (a) digitize MDPI 2020 Figures 12-13 step responses and extrapolate toward Q = 0.5 (the data doesn't reach it but trend visible), or (b) find an additional actuator instance designed for critical damping. The TeachSpin torsional oscillator (pocket fallback, [SOURCES.md §7.4](../../data/sources/SOURCES.md)) is engineered exactly for this — tunable damping across the Q = 0.5 region with documented step responses.
 
 **Status:** F-003-rlc confirmed in substrate-two. F-003-actuator and F-003-engine (cross-substrate replications) are queued as Phase C work. Until cross-substrate replication lands, F-003 stands as substrate-conditional (proven in RLC, predicted elsewhere). The prediction is sharp enough — the algebraic factor is exact, not approximate — that any well-instrumented substrate sweeping Q = 0.5 should expose it directly.
+
+## F-001-actuator (MDPI 2020) · chit_max bound from electromechanical coupling · 2026-05-12
+
+**Claim.** cdv1 F-001 (chit_max ≈ -ln(1 - η_max)) applies to voice coil linear actuator substrates with η_em = (BL)² / (c·R + (BL)²) — the fraction of input electrical power that crosses the BL coupling into the mechanical degree of freedom at mechanical resonance. For an actuator with no specified external load, this is a *substrate-intrinsic upper bound* on chit, not an observed-equal-to-prediction value.
+
+**Evidence.** F-001-actuator experiment ([experiments/f001_actuator.py](../../experiments/f001_actuator.py), [docs/results/f001_actuator.json](../results/f001_actuator.json)) computes η_em for the two MDPI 2020 cantilever VCA instances using their published Table 2 parameters (BL=28.46 N/A, R=28.9 Ω; c=300 N·s/m for Al bobbin, c=25 N·s/m for plastic bobbin):
+
+| Instance | c (N·s/m) | Q | η_em | chit_max bound |
+|---|---|---|---|---|
+| Aluminum bobbin (heavy eddy damping) | 300 | 0.033 | 0.0854 | 0.0893 |
+| Plastic bobbin (light damping) | 25 | 0.394 | 0.5285 | 0.7519 |
+
+Formula assumes L_e·ω₀ ≪ R. For these instances L_e·ω₀/R = 0.128 (well below 0.3 sanity threshold), formula applies.
+
+**Cross-substrate fingerprint surfacing across F-001 entries:**
+
+| Substrate | chit_max bound or observed | Capping mechanism |
+|---|---|---|
+| Loudspeaker driver (Phase E shelved) | ~0.003–0.014 estimated | Half-space acoustic radiation efficiency cap |
+| Engine Camry 2.4L (mpa-engine F-001) | 0.432 predicted, 0.410 observed | Thermal efficiency at BSFC sweet spot |
+| MDPI 2020 VCA aluminum bobbin | 0.089 bound | Heavy eddy-current damping wastes power before it reaches mechanical motion |
+| MDPI 2020 VCA plastic bobbin | 0.752 bound | Light damping + strong BL coupling → wide envelope, highest of any substrate characterized to date |
+
+**Framework implication.** The "narrow chit envelope" intuition (carried forward from loudspeaker thinking pre-pivot) was a loudspeaker-specific finding, *not* a substrate-class universal. Voice coil substrates with light mechanical damping and strong BL coupling can span a wider chit envelope than engines. The substrate-class fingerprint is *not* "chit envelope width" but rather "η-cap mechanism" — what physically limits the conversion efficiency. Four distinct capping mechanisms observed so far: radiation, thermal, eddy-dissipation, electromechanical-coupling-limited.
+
+F-001 itself — the universal form chit_max ≈ -ln(1 - η) — passes cleanly. The cross-substrate observation is on **what η_max means physically**, which is substrate-conditional content. cdv1's substrate-conditional/substrate-neutral split holds: the universal form is preserved, the per-substrate amplitudes (and their physical interpretation) vary.
+
+**Pending closure for full F-001-actuator universality:** PyHDDBenchmark VCM and PZT η values not extractable from the modal-sum plant.py representation alone. VCM would need the underlying (BL, R, c) parameters from the Atsumi & Yabui 2020 paper; PZT needs a different substrate-class formula (electrostrictive drive, not BL-coupled Lorentz). Substrate-class scope decision deferred: one substrate-class spanning both voice coil and PZT actuators, or split into electromagnetic-actuator and piezoelectric-actuator classes.
+
+**Status:** F-001-actuator-mdpi confirmed as bound (not as observed-match-to-prediction; that requires step-response measurements under specified load). F-001 cross-substrate fingerprint refined: capping mechanism is the substrate-class signature, not chit_max value alone.

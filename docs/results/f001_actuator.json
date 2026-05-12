@@ -1,0 +1,63 @@
+{
+  "experiment": "f001_actuator",
+  "run_at": "2026-05-12T12:38:26.443570+00:00",
+  "phase_a_step": 7,
+  "claim_under_test": "cdv1 F-001: chit_max \u2248 -ln(1 - \u03b7_max) for any driven-dissipative substrate-class instance, where \u03b7_max is the operating-point peak conversion efficiency. For voice coil actuators at mechanical resonance, \u03b7_em = (BL)\u00b2 / (c\u00b7R + (BL)\u00b2).",
+  "instances": [
+    {
+      "substrate": "MDPI 2020 cantilever VCA",
+      "instance": "aluminum_bobbin",
+      "regime": "r",
+      "Q": 0.03279939023823461,
+      "BL_npa": 28.46,
+      "R_ohm": 28.9,
+      "c_nspm": 300.0,
+      "L_e_henry": 0.024535,
+      "omega_0_radps": 150.9174397464783,
+      "L_e_reactance_ratio": 0.12812316208234759,
+      "eta_em": 0.0854402981544797,
+      "chit_max_bound": 0.08931252968940191,
+      "interpretation": "At mechanical resonance \u03c9\u2080=150.92 rad/s, fraction 0.0854 of input electrical power crosses BL coupling into mechanical motion. chit at any operating point delivering useful work bounded above by 0.0893."
+    },
+    {
+      "substrate": "MDPI 2020 cantilever VCA",
+      "instance": "plastic_bobbin",
+      "regime": "r",
+      "Q": 0.3935926828588154,
+      "BL_npa": 28.46,
+      "R_ohm": 28.9,
+      "c_nspm": 25.0,
+      "L_e_henry": 0.024535,
+      "omega_0_radps": 150.9174397464783,
+      "L_e_reactance_ratio": 0.12812316208234759,
+      "eta_em": 0.5285393869615593,
+      "chit_max_bound": 0.7519197158412964,
+      "interpretation": "At mechanical resonance \u03c9\u2080=150.92 rad/s, fraction 0.5285 of input electrical power crosses BL coupling into mechanical motion. chit at any operating point delivering useful work bounded above by 0.7519."
+    }
+  ],
+  "cross_substrate_comparison": {
+    "mdpi_2020_chit_max_bound_range": [
+      0.08931252968940191,
+      0.7519197158412964
+    ],
+    "engine_chit_max_observed_camry": 0.41,
+    "engine_chit_max_predicted_camry": 0.432,
+    "loudspeaker_chit_max_estimated_typical_range": [
+      0.003,
+      0.014
+    ],
+    "observation": "MDPI 2020 plastic-bobbin actuator bound (chit_max \u2264 0.752) is HIGHER than engines (~0.41). The 'narrow chit envelope' was a loudspeaker-specific finding, not a substrate-class one for actuators. Voice coil substrates span a wider chit envelope than engines when the mechanical damping is light and electromagnetic coupling is strong.",
+    "substrate_class_chit_max_ordering": "loudspeaker (\u22640.014, radiation-capped) << engine (~0.41, thermal-capped) < VCA-eddy-damped (\u22640.089, dissipation-capped) < engine again < VCA-light-damped (\u22640.752, coupling-capped)"
+  },
+  "deferred": [
+    {
+      "substrate": "PyHDDBenchmark VCM",
+      "reason": "plant.py provides modal parameters (\u03c9, \u03b6, \u03ba) but not direct (BL, R, c) per mode. \u03b7_em formula requires substrate-intrinsic electrical and mechanical parameters. Deferred pending Atsumi & Yabui 2020 paper extraction or direct measurement back-out from Fre_Resp.json.",
+      "alternative_path": "DC gain Kp_vcm = 3.7976e7 and modal residues \u03ba encode coupling indirectly. Recovering (BL, R, c) per mode requires the physical-parameter form of the plant model, which is downstream of the modal-sum representation in plant.py."
+    },
+    {
+      "substrate": "PyHDDBenchmark PZT",
+      "reason": "PZT is electrostrictive drive, not Lorentz. The BL-coupling form of the \u03b7_em formula does not apply directly. PZT efficiency at mechanical resonance uses d33-coefficient \u00d7 stress geometry; a different substrate-class formula. Substrate-class scope decision deferred (one class spanning both drive mechanisms, or two)."
+    }
+  ]
+}

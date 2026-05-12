@@ -111,6 +111,52 @@ def chit_max_predicted(eta_electromechanical_max: float) -> float:
     return -math.log(1.0 - eta_electromechanical_max)
 
 
+def electromechanical_efficiency_at_resonance(
+    BL: float,
+    R: float,
+    c: float,
+    L_e: Optional[float] = None,
+    omega_0: Optional[float] = None,
+) -> float:
+    """Fraction of input electrical power that flows through the BL coupling
+    into the mechanical degree of freedom, at mechanical resonance.
+
+    Standard voice coil motor analysis (Beranek 1954): at mechanical resonance
+    ω₀ = √(k/m), the mechanical impedance is purely real and equals c. The
+    BL coupling reflects this back into the electrical circuit as a motional
+    resistance R_motional = (BL)²/c. Total electrical impedance at resonance
+    (ignoring L_e if specified) is R + (BL)²/c. The fraction of input power
+    that crosses the BL coupling is:
+
+        η_em = (BL)² / (c·R + (BL)²)
+
+    L_e × ω₀ correction: if L_e and omega_0 are both provided and ω₀·L_e is
+    comparable to R, the electrical reactance shifts the impedance and the
+    formula's accuracy degrades. The correction is small for typical voice
+    coil actuators where L_e·ω₀ ≪ R; raise a sanity warning when this fails.
+
+    Returns η ∈ (0, 1). Both bobbin instances of MDPI 2020 satisfy
+    L_e·ω₀ / R ≈ 24.5 mH × 150.9 rad/s / 28.9 Ω ≈ 0.128, well below unity —
+    formula applies.
+    """
+    if BL <= 0 or R <= 0 or c <= 0:
+        raise ValueError("BL, R, c must all be positive")
+    bl2 = BL * BL
+    eta = bl2 / (c * R + bl2)
+
+    if L_e is not None and omega_0 is not None:
+        reactance_ratio = (L_e * omega_0) / R
+        if reactance_ratio > 0.3:
+            import warnings
+            warnings.warn(
+                f"electromechanical efficiency formula assumes L_e·ω₀ ≪ R, "
+                f"but L_e·ω₀/R = {reactance_ratio:.3f}. Result is approximate.",
+                stacklevel=2,
+            )
+
+    return eta
+
+
 def gamma_decay_rate(omega_radps: float, Q: float) -> float:
     """Exponential decay rate γ in e^(-γt) for a damped oscillator.
 
@@ -229,6 +275,7 @@ __all__ = [
     "compute_zeta",
     "regime_from_Q",
     "chit_max_predicted",
+    "electromechanical_efficiency_at_resonance",
     "gamma_decay_rate",
     "omega_damped",
     "load_actuator",
