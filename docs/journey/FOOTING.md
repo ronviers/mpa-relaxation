@@ -86,3 +86,24 @@ F-001 itself — the universal form chit_max ≈ -ln(1 - η) — passes cleanly.
 **Pending closure for full F-001-actuator universality:** PyHDDBenchmark VCM and PZT η values not extractable from the modal-sum plant.py representation alone. VCM would need the underlying (BL, R, c) parameters from the Atsumi & Yabui 2020 paper; PZT needs a different substrate-class formula (electrostrictive drive, not BL-coupled Lorentz). Substrate-class scope decision deferred: one substrate-class spanning both voice coil and PZT actuators, or split into electromagnetic-actuator and piezoelectric-actuator classes.
 
 **Status:** F-001-actuator-mdpi confirmed as bound (not as observed-match-to-prediction; that requires step-response measurements under specified load). F-001 cross-substrate fingerprint refined: capping mechanism is the substrate-class signature, not chit_max value alone.
+
+## M-001 · F-003 algebraic-signature test has ~30 dB SNR floor · 2026-05-12
+
+**Methodological finding** (M-series for test-machinery characterization, distinct from F-series substrate findings).
+
+**Claim.** The F-003 algebraic-signature test (RMS-residual ratio between algebraic-exp and pure-exp envelope fits, with minimum at Q = 0.5) survives Gaussian measurement noise down to ~30 dB SNR. Above 40 dB the signature is robust; below 20 dB it is lost.
+
+**Evidence.** [experiments/f003_noise_robustness.py](../../experiments/f003_noise_robustness.py), [docs/results/f003_noise_robustness.json](../results/f003_noise_robustness.json). Synthetic RLC step responses across Q sweep at SNR levels 10–60 dB, 30 noise realizations per (Q, SNR) point. 2σ-rule detection criterion (mean ratio at Q = 0.5 below nearest non-critical competitor by at least 2σ).
+
+| SNR | mean ratio at Q = 0.5 | nearest competitor | detectable |
+|---|---|---|---|
+| 60 dB | 0.011 ± 0.0002 | 0.277 | yes |
+| 50 dB | 0.035 ± 0.0006 | 0.278 | yes |
+| 40 dB | 0.111 ± 0.0015 | 0.290 | yes |
+| 30 dB | 0.334 ± 0.0045 | 0.386 | yes (marginal) |
+| 20 dB | 0.747 ± 0.0116 | 0.710 | **no** |
+| 10 dB | 0.963 ± 0.0042 | 0.942 | **no** |
+
+**Framework implication.** Real-substrate F-003 measurements must achieve at least 30 dB SNR (preferably 40+ dB) for the algebraic signature to be detectable. Modern lab oscilloscopes (60–80 dB), professional ADCs (80–100 dB), and even consumer-grade DAQs (30–50 dB) all clear the floor comfortably. The noise robustness is not a practical barrier; this finding rules out one failure mode for upcoming real-substrate replications (noisy data masking a present signature → false negative).
+
+**When to cite this.** Any F-003 test against real-substrate data must report measurement SNR. If reported SNR is below 30 dB and the F-003 signature is not detected, the result is methodologically inconclusive — the framework's prediction may still hold, the test just can't see it. Future-Claude: include SNR estimation as a standard step in F-003-on-real-data experiments.
