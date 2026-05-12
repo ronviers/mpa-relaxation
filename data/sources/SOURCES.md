@@ -4,6 +4,18 @@ Pointers to substrate-data archives used in this repo. Finding-centric repo, so 
 
 ## §1 Voice coil linear actuators (substrate zero)
 
+### §1.0 Research outputs (2026-05-12)
+
+Three outside-model research runs against the actuator-targeted prompt landed 2026-05-12. Distilled cross-reference at [actuator-research-cross-reference.md](actuator-research-cross-reference.md); raw outputs preserved:
+
+- [actuator candidates.md](actuator%20candidates.md)
+- [Canonical actuator candidates.md](Canonical%20actuator%20candidates.md)
+- [Linear Voice Coil Actuator Data Search.md](Linear%20Voice%20Coil%20Actuator%20Data%20Search.md) — cleaned in-place, ~42 KB of unreadable PNG-rendered formulas stripped
+
+**Top-ranked candidate (verified):** [Effect of Electromagnetic Damping on System Performance of Voice-Coil Actuator Applied to Balancing-Type Scale](https://www.mdpi.com/2076-0825/9/1/8) (MDPI Actuators 2020, 9(1):8). Bare cantilever + bobbin + magnet VCA. Full electromagnetic and mechanical parameters in Table 2. Step responses in Figures 12–13. Two configured instances (Al bobbin, plastic bobbin) demonstrating eddy-current damping tuning. Caveat: both Q values land in r-regime; Phase C supplementation needed for c→s→r walk.
+
+**Empirical update to §1.1 below:** systematic open-data scan returned essentially null for bare-VCA step-response time-series. The archives listed below remain authoritative entry points, but the *expected* presence of machine-readable datasets was optimistic. Bias toward paper PDFs with embedded figures rather than supplementary `.csv` / `.mat` files.
+
 ### §1.1 Open-data archives
 
 - **Zenodo** — [zenodo.org](https://zenodo.org). CERN-funded open-science catch-all. Search keys: "voice coil actuator", "linear actuator dataset", "VCM characterization". Common upload: raw `.csv` / `.mat` time-series from university test rigs (position, current, force, displacement).
