@@ -111,3 +111,32 @@ Lasers carry *both* axes (cavity Q is one substrate parameter; pump level above 
 Data: every LED datasheet has forward voltage, current vs voltage curves, luminous efficacy. Across LED chemistries (red, green, blue, white, IR, UV), threshold varies — multiple "configured instances" of the substrate-class trivially available.
 
 Holds for substrate-N as the drive-axis exemplar. The actuator/RLC/materials chain is all damping-axis; LEDs (then eventually lasers) are the drive-axis arm of the universality test.
+
+## §8 Data acquisition channels (notes for future research)
+
+### §8.1 Chinese manufacturer B2B data
+
+Chinese manufacturers (electronics, MEMS, actuators, motors, sensors, LEDs) routinely publish empirical measurement data directly to wholesale buyers as a form of remote quality control. Substantial raw signal — Q values, settling-time data, step-response oscilloscope screenshots, aging test results, batch-level reliability characterizations — circulates in this ecosystem.
+
+Where it lives:
+
+- Alibaba / 1688 / Made-in-China.com supplier QC report sections.
+- Direct OEM B2B channels (buyer-supplier per-shipment test reports, sample-batch characterizations).
+- WeChat industry channels (公众号 public accounts, 微信群 trade groups) for verticals like voice coil motors, MEMS, LEDs, haptic LRAs.
+- [CNKI (China National Knowledge Infrastructure)](https://www.cnki.net) Chinese-language academic literature — partly indexed in Western databases but mostly Mandarin-only.
+
+Substrates with the richest Chinese manufacturer ecosystems:
+
+- Voice coil actuators / VCMs / LRAs — camera OIS, smartphone haptics (AAC Technologies, Goertek dominate)
+- Stepper motors — Leadshine, Wantai
+- LEDs — China is the world's largest LED manufacturing base; massive datasheet volume
+- Mechanical switches — enormous consumer electronics switch market with detailed bounce-time specs
+
+Practical caveats:
+
+- Mandarin-language access. Multiplies LLM token cost or requires a Chinese-speaking collaborator.
+- Methodology variability — measurement standards aren't always declared.
+- Fragmentation — scattered across hundreds of supplier portals, not centrally indexed.
+- Provenance opacity — hard to verify which standard (if any) was followed.
+
+When to draw on this channel: when Western open-data channels hit a wall on a specific substrate (especially LRAs, OIS actuators, consumer LEDs, custom motors, micro-switches). Outside-model research runs with Mandarin search capability would surface this kind of data more efficiently than English-only searches. Not for immediate use; banked for future-Claude.
